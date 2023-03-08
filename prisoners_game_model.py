@@ -1,6 +1,7 @@
 import sys
 import random
 
+
 class prisoners_model:
     def __init__(self, prisoners_num, games_num):
         """
@@ -24,12 +25,14 @@ class prisoners_model:
         """
         self.games = games_num
 
-    def play(self):
+    def play(self, optimized):
         """
         :return:
         """
+        # sys.stdout = open("PrisonersReults.txt", "w")
         success = 0
-        games = self.prisoners
+        games = self.games
+        strategy = {True: self.optimized_prison_round, False: self.unoptimized_prison_round}[optimized]
         for game in range(games):
             print("game number", (game + 1))
             boxes = self.prisoners * [0]
@@ -37,19 +40,61 @@ class prisoners_model:
                 boxes[prisoner_index] = prisoner_index
             random.shuffle(boxes)
 
-            if self.prison_round(boxes):
+            if strategy(self, boxes):
                 success += 1
 
-        print("n =", self.prisoners, " k =", games, " success = ", success,
-              "\nsuccess / k in % =", 100 * (success / games))
+        print("n =", self.prisoners, " k =", self.games, " s = ", success,
+              "\ns / k in % =", 100 * (success / games))
         success = 0
         half_prisoners_number = self.prisoners / 2
         for games in range(self.prisoners // 2):
             success += 1 / (half_prisoners_number + (games + 1))
-        print("probability by loop calculate the geometric series:\n",
-              "1 - (1/((n/2)+1) + 1/((n/2)+2) + ...) =", 1 - success)
+        if optimized:
+            print("probability by loop calculate the geometric series:\n",
+                  "1 - (1/((n/2)+1) + 1/((n/2)+2) + ...) =", 1 - success)
+        else:
+            print("probability by random picking:\n",
+                  "1/(2^n) =", 1 / 2**self.prisoners)
+        # sys.stdout.close()
 
-    def prison_round(self, boxes):
+    def unoptimized_prison_round(self, boxes):
+        """
+        :param boxes: List of all boxes containing the prisoner's number by order
+        :return: True - All prisoners found their number, else False
+        """
+        number_of_boxes = len(boxes)
+        prisoners_status_list = number_of_boxes * [0]
+        for prisoner in range(number_of_boxes):
+            print("prisoner =", prisoner)
+            checked_boxes = []
+            while True:
+                picked_box = random.randint(0, number_of_boxes - 1)
+                if picked_box not in checked_boxes:
+                    checked_boxes.append(picked_box)
+                    if picked_box == prisoner:
+                        break
+            if len(checked_boxes) <= (number_of_boxes // 2):
+                prisoners_status_list[prisoner] = 1
+            print("list l:", end=" ")
+            for index in range(number_of_boxes):
+                print(boxes[index], end=" ")
+            print()
+            print("list checked_boxes:", end=" ")
+            for index in range(len(checked_boxes)):
+                print(checked_boxes[index], end=" ")
+            print()
+            if len(checked_boxes) <= (number_of_boxes // 2):
+                print("prisoner number ", prisoner, " succeeded ", "chain length = ", len(checked_boxes))
+            else:
+                print("prisoner number ", prisoner, " failed ", "chain length =", len(checked_boxes))
+        print("number of prisoners that find their number is:", sum(prisoners_status_list), "\n    from",
+              number_of_boxes, " prisoners.\n")
+        if sum(prisoners_status_list) == number_of_boxes:
+            return True
+        else:
+            return False
+
+    def optimized_prison_round(self, boxes):
         """
         :param boxes: List of all boxes containing the prisoner's number by order
         :return: True - All prisoners found their number, else False
@@ -75,11 +120,11 @@ class prisoners_model:
                         picked_box = boxes[picked_box]
                         checked_boxes.append(picked_box)
 
-            print("boxes list by order:", end=" ")
+            print("boxes index list by order:", end=" ")
             for index in range(number_of_boxes):
                 print(boxes[index], end=" ")
             print()
-            print("picked boxes values by oder:", end=" ")
+            print("boxes values list by order:", end=" ")
             for index in range(len(checked_boxes)):
                 print(checked_boxes[index], end=" ")
             print()
@@ -88,8 +133,8 @@ class prisoners_model:
             else:
                 print("prisoner number ", prisoner, " failed ", "chain length =", (pick + 1))
 
-        print("number of prisoners that found their number is:",
-              sum(prisoners_status_list), "\n    from", number_of_boxes, " prisoners.\n")
+        print("number of prisoners that found their number is:", sum(prisoners_status_list), "\n    from",
+              number_of_boxes, " prisoners.\n")
         if sum(prisoners_status_list) == number_of_boxes:
             return True
         else:

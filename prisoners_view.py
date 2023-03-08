@@ -1,14 +1,37 @@
-
 import settings_view
 import game_view
+
 
 class main_view:
     def __init__(self, x_size=800, y_size=800, controller=None):
         self.x_size = x_size  # resolution X
         self.y_size = y_size  # resolution Y
         self.controller = controller
-        self.settings = settings_view.settings_view(300, 300)
-        main_dialog = settings_view.tk.Frame(self.settings.root)
-        self.game = game_view.game_view(x_size, y_size, main_dialog)
+        self.settings = settings_view.settings_view(300, 350, self.controller)
+        self.game = game_view.game_view(x_size, y_size, self.controller)
+        self.run()
 
-    def getSettings(self):
+    def run(self):
+        # Run until the user asks to quit
+        settings_screen = self.settings.get_settings_screen()
+        game_screen = self.game.get_game_screen()
+        while self.game.running:
+
+            # Did the user click the window close button?
+            for event in self.game.pygame.event.get():
+                self.eventHandler(event)
+
+            # Fill the background with white
+            game_screen.fill((160, 160, 160))
+            game_screen.blit(self.game.background, (0, 0))
+
+            # Flip the display
+            self.game.update_game()
+            self.settings.update_settings()
+
+        # Done! Time to quit.
+        game_screen.quit()
+
+    def eventHandler(self, event):
+        if event.type == self.game.pygame.QUIT:
+            self.game.running = False
