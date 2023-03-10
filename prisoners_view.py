@@ -7,13 +7,13 @@ class main_view:
         self.x_size = x_size  # resolution X
         self.y_size = y_size  # resolution Y
         self.controller = controller
-        self.settings = settings_view.settings_view(300, 350, self.controller,self)
+        self.settings = settings_view.settings_view(300, 350, self.controller, self)
         ##self.run()
         settings_screen = self.settings.get_settings_screen()
 
     def run(self):
         # Run until the user asks to quit
-        self.game = game_view.game_view(self.x_size, self.y_size, self.controller)
+        self.game = game_view.game_view(self.x_size, self.y_size)
         game_screen = self.game.get_game_screen()
         while self.game.running:
 

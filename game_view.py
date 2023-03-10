@@ -37,6 +37,7 @@ class game_view:
 
         self.pygame = pygame
         self.pygame.init()  # initialize all
+        self.running = True
 
         self.screen = pygame.display.set_mode([x_size, y_size])  # display screen
         self.active_tb = None

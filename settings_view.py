@@ -3,10 +3,10 @@ from tkinter import font
 import prisoners_view
 import threading
 class settings_view:
-    def __init__(self, x_size, y_size, controller,main_view):
+    def __init__(self, x_size, y_size, controller, main_view):
            # Main game settings
         self.controller = controller
-        self.main_view =main_view
+        self.main_view = main_view
         self.root = tk.Tk()
         self.root.title('Prisoners Escape')
         self.root.resizable(width=False, height=False)
