@@ -13,22 +13,17 @@ def games_Assert(games_num):
 
 class Controller(object):
 
-    def __init__(self, model: prisoners_game_model, view: prisoners_view):
-        self.model = model
-        self.view = view
-        self.run()
-
-    def run(self):
-        self.model(100, 1)
-        self.view(1200, 900, self)
+    def __init__(self):
+        self.model = prisoners_game_model.prisoners_model(100, 1)
+        self.view = prisoners_view.main_view(1200, 900,self)
 
     def change_model_prisoners(self, prisoners_num):
         prisoners_Assert(prisoners_num)
-        self.model.change_prisoners_number(self.model, int(prisoners_num))
+        self.model.change_prisoners_number(int(prisoners_num))
 
     def change_model_games(self, games_num):
         games_Assert(games_num)
-        self.model.change_games_number(self.model, int(games_num))
+        self.model.change_games_number(int(games_num))
 
     def start_game(self, optimized):
-        self.model.play(self.model, bool(optimized))
+        self.model.play(bool(optimized))

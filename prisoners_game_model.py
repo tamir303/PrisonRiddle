@@ -1,22 +1,44 @@
 import sys
 import random
 
-
+# self.prisoners = [
+#     {
+#         "PrisonerNumber": i,
+#         "ChainLength": chainLength,
+#         "CheckBoxesList": checkBoxesList,
+#         "IsSuccess": isSuccess,
+#         "NumberOfTries": counter
+#     }
+#     for i in range(1, prisoners_num + 1)
+# ]
+# self.prisoner_data = {
+#     "prisoners": self.prisoners,
+#     "numberOfPrisoners": prisoners_num,
+#     "numberOfGames": games_num,
+#     "successPerGame": 0
+# }
+class prisoner_struct:
+    def __init__(self, number, checkBoxesList, isSuccess):
+        self.number = number
+        self.checkBoxesList = checkBoxesList
+        self.isSuccess = isSuccess
+        
 class prisoners_model:
-    def __init__(self, prisoners_num, games_num):
+    def __init__(self,prisoners_num,games):
         """
         :param prisoners_num: number of prisoners
         :param games_num: number of games
         """
-        self.prisoners = prisoners_num
-        self.games = games_num
+        self.prisoners_num = prisoners_num
+        self.games = games
+        self.prisoners={}
 
     def change_prisoners_number(self, prisoners_num):
         """
         :param prisoners_num: number of prisoners
         :return: None
         """
-        self.prisoners = prisoners_num
+        self.prisoners_num = prisoners_num
 
     def change_games_number(self, games_num):
         """
@@ -35,26 +57,26 @@ class prisoners_model:
         strategy = {True: self.optimized_prison_round, False: self.unoptimized_prison_round}[optimized]
         for game in range(games):
             print("game number", (game + 1))
-            boxes = self.prisoners * [0]
-            for prisoner_index in range(self.prisoners):
+            boxes = self.prisoners_num * [0]
+            for prisoner_index in range(self.prisoners_num):
                 boxes[prisoner_index] = prisoner_index
             random.shuffle(boxes)
 
-            if strategy(self, boxes):
+            if strategy(boxes):
                 success += 1
 
-        print("n =", self.prisoners, " k =", self.games, " s = ", success,
+        print("n =", self.prisoners_num, " k =", self.games, " s = ", success,
               "\ns / k in % =", 100 * (success / games))
         success = 0
-        half_prisoners_number = self.prisoners / 2
-        for games in range(self.prisoners // 2):
+        half_prisoners_number = self.prisoners_num / 2
+        for games in range(self.prisoners_num // 2):
             success += 1 / (half_prisoners_number + (games + 1))
         if optimized:
             print("probability by loop calculate the geometric series:\n",
                   "1 - (1/((n/2)+1) + 1/((n/2)+2) + ...) =", 1 - success)
         else:
             print("probability by random picking:\n",
-                  "1/(2^n) =", 1 / 2**self.prisoners)
+                  "1/(2^n) =", 1 / 2**self.prisoners_num)
         # sys.stdout.close()
 
     def unoptimized_prison_round(self, boxes):
@@ -107,8 +129,8 @@ class prisoners_model:
             checked_boxes = []
             picked_box = boxes[prisoner]
             checked_boxes.append(picked_box)
+            success = False
             for pick in range(number_of_boxes):
-                success = False
                 print("try number =", pick, " picked_box =", picked_box)
                 if picked_box == prisoner and pick < (number_of_boxes // 2):
                     success = True
@@ -120,11 +142,11 @@ class prisoners_model:
                     else:
                         picked_box = boxes[picked_box]
                         checked_boxes.append(picked_box)
-
+            self.prisoners[prisoner] = prisoner_struct(prisoner,checked_boxes,success)
             print("boxes values list by order:", end=" ")
             for val in checked_boxes:
                 print(val, end=" ")
-            print()
+            print(self.prisoners)
             if success:
                 print("prisoner number ", prisoner, " succeeded ", "chain length =", (pick + 1))
             else:
