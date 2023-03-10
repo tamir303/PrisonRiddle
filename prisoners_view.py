@@ -1,19 +1,15 @@
 import game_view
 from settings_view import settings_view
 
-
 class main_view:
-    def __init__(self, x_size=800, y_size=800, controller=None):
-        self.x_size = x_size  # resolution X
-        self.y_size = y_size  # resolution Y
+    def __init__(self, controller=None):
         self.controller = controller
         self.settings = settings_view(300, 350, self.controller, self)
-        ##self.run()
 
-    def run(self,setting):
-        self.settings=setting
+    def run(self, setting):
+        self.settings= setting
         # Run until the user asks to quit
-        self.game = game_view.game_view(self.x_size, self.y_size)
+        self.game = game_view.game_view()
         game_screen = self.game.get_game_screen()
         while self.game.running:
 
@@ -22,8 +18,7 @@ class main_view:
                 self.eventHandler(event)
 
             # Fill the background with white
-            game_screen.fill((160, 160, 160))
-            game_screen.blit(self.game.background, (0, 0))
+            self.game.draw_game(3)
 
             # Flip the display
             self.game.update_game()

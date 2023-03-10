@@ -1,3 +1,4 @@
+import numpy
 import pygame
 
 class Prisoner(pygame.sprite.Sprite):
@@ -11,6 +12,10 @@ class Prisoner(pygame.sprite.Sprite):
         self.image = pygame.transform.flip(self.image, 90, 0)
         self.rect = self.image.get_rect(center=pos)
         self.pos = pos
+
+    def update_location(self, pos):
+        self.pos = pos
+        self.rect = self.image.get_rect(center=pos)
 
 class Box(pygame.sprite.Sprite):
 
@@ -27,23 +32,27 @@ class Box(pygame.sprite.Sprite):
 
 class game_view:
 
-    def __init__(self, x_size, y_size, number_of_boxes=10):
-
-        PRISONERS_START_POS = (x_size // 8, y_size // 8)
-        BOX_START_POS = [x_size // 2, y_size // 3]
-        BOXES_PER_ROW = 5
-        BOXES_SHIFT = x_size / 9
-        BOXES_MAX_NUMBER = 50
-
+    def __init__(self, number_of_boxes=10, speed=1):
         self.pygame = pygame
         self.pygame.init()  # initialize all
         self.running = True
 
-        self.screen = pygame.display.set_mode([x_size, y_size])  # display screen
+        info = pygame.display.Info()
+        screen_width = int(info.current_w * 0.6)
+        screen_height = int(info.current_h * 0.6)
+        self.screen = pygame.display.set_mode((screen_width, screen_height))  # display screen
+
+        PRISONERS_START_POS = [screen_width // 8, screen_height // 8]
+        BOX_START_POS = [screen_width // 2, screen_height // 3]
+        BOXES_PER_ROW = 5
+        BOXES_SHIFT = screen_width / 9
+        BOXES_MAX_NUMBER = 50
+
         self.active_tb = None
         self.background = pygame.image.load("prison_floor.jpg")
         self.background = pygame.transform.smoothscale(self.background, self.screen.get_size())
 
+        self.speed = speed
         self.prisoner = Prisoner(PRISONERS_START_POS)
         self.boxes = dict()
         for r in range(number_of_boxes // BOXES_PER_ROW):
@@ -57,15 +66,26 @@ class game_view:
     def update_game(self):
         self.pygame.display.flip()
 
-    def draw_game(self, moveTo=None):
+    def draw_game(self, moveTo=-1) -> bool:
         self.screen.fill((160, 160, 160))
         self.screen.blit(self.background, (0, 0))
         for box in self.boxes.values():
             self.screen.blit(box.image, box.rect)
         self.screen.blit(self.prisoner.image, self.prisoner.rect)
-        if moveTo is not None:
+        if moveTo != -1:
             self.movePrisoner(moveTo)
+            if self.prisoner.rect.colliderect(self.boxes[moveTo].rect):
+                print("Open Box {}".format(moveTo))
+                pygame.time.delay(1000)
+                return True
+        return False
 
     def movePrisoner(self, moveTo):
-        pass
+        Px, Py = self.prisoner.pos
+        Bx, By = self.boxes[moveTo].pos
+        dx = numpy.sign(Bx - Px) * self.speed + Px
+        dy = numpy.sign(By - Py) * self.speed + Py
+        self.prisoner.update_location((dx, dy))
+
+
 
