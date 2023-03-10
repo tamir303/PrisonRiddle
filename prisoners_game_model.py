@@ -23,15 +23,22 @@ class prisoner_struct:
         self.checkBoxesList = checkBoxesList
         self.isSuccess = isSuccess
         
+class game_struct:
+    def __init__(self, number):
+        self.number=number
+        self.prisoners={}
+        self.isSuccess = False
+    def set_succes(self):
+        self.isSuccess = True
 class prisoners_model:
-    def __init__(self,prisoners_num,games):
+    def __init__(self,prisoners_num,num_of_games):
         """
         :param prisoners_num: number of prisoners
         :param games_num: number of games
         """
         self.prisoners_num = prisoners_num
-        self.games = games
-        self.prisoners={}
+        self.num_of_games = num_of_games
+        self.games ={}
 
     def change_prisoners_number(self, prisoners_num):
         """
@@ -45,7 +52,7 @@ class prisoners_model:
         :param games_num: number of games
         :return: Exception or None
         """
-        self.games = games_num
+        self.num_of_games = games_num
 
     def play(self, optimized):
         """
@@ -53,24 +60,24 @@ class prisoners_model:
         """
         # sys.stdout = open("PrisonersReults.txt", "w")
         success = 0
-        games = self.games
         strategy = {True: self.optimized_prison_round, False: self.unoptimized_prison_round}[optimized]
-        for game in range(games):
+        for game in range(self.num_of_games):
             print("game number", (game + 1))
             boxes = self.prisoners_num * [0]
             for prisoner_index in range(self.prisoners_num):
                 boxes[prisoner_index] = prisoner_index
             random.shuffle(boxes)
-
-            if strategy(boxes):
+            self.games[game] = game_struct(game)
+            if strategy(boxes,game):
                 success += 1
+                self.games[game].isSuccess=True
 
-        print("n =", self.prisoners_num, " k =", self.games, " s = ", success,
-              "\ns / k in % =", 100 * (success / games))
+        print("n =", self.prisoners_num, " k =", self.num_of_games, " s = ", success,
+              "\ns / k in % =", 100 * (success / self.num_of_games))
         success = 0
         half_prisoners_number = self.prisoners_num / 2
-        for games in range(self.prisoners_num // 2):
-            success += 1 / (half_prisoners_number + (games + 1))
+        for self.num_of_games in range(self.prisoners_num // 2):
+            success += 1 / (half_prisoners_number + (self.num_of_games + 1))
         if optimized:
             print("probability by loop calculate the geometric series:\n",
                   "1 - (1/((n/2)+1) + 1/((n/2)+2) + ...) =", 1 - success)
@@ -79,7 +86,7 @@ class prisoners_model:
                   "1/(2^n) =", 1 / 2**self.prisoners_num)
         # sys.stdout.close()
 
-    def unoptimized_prison_round(self, boxes):
+    def unoptimized_prison_round(self, boxes,game):
         """
         :param boxes: List of all boxes containing the prisoner's number by order
         :return: True - All prisoners found their number, else False
@@ -109,6 +116,7 @@ class prisoners_model:
                 print("prisoner number ", prisoner, " succeeded ", "chain length = ", len(checked_boxes))
             else:
                 print("prisoner number ", prisoner, " failed ", "chain length =", len(checked_boxes))
+            self.games[game].prisoners[prisoner] = prisoner_struct(prisoner,checked_boxes.copy(),prisoners_status_list[prisoner])
             checked_boxes.clear()
         print("number of prisoners that find their number is:", sum(prisoners_status_list), "\n    from",
               number_of_boxes, " prisoners.\n")
@@ -117,7 +125,7 @@ class prisoners_model:
         else:
             return False
 
-    def optimized_prison_round(self, boxes):
+    def optimized_prison_round(self, boxes,game):
         """
         :param boxes: List of all boxes containing the prisoner's number by order
         :return: True - All prisoners found their number, else False
@@ -142,11 +150,10 @@ class prisoners_model:
                     else:
                         picked_box = boxes[picked_box]
                         checked_boxes.append(picked_box)
-            self.prisoners[prisoner] = prisoner_struct(prisoner,checked_boxes,success)
+            self.games[game].prisoners[prisoner] = prisoner_struct(prisoner,checked_boxes.copy(),success)
             print("boxes values list by order:", end=" ")
             for val in checked_boxes:
                 print(val, end=" ")
-            print(self.prisoners)
             if success:
                 print("prisoner number ", prisoner, " succeeded ", "chain length =", (pick + 1))
             else:

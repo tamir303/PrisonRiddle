@@ -15,7 +15,7 @@ class Controller(object):
 
     def __init__(self):
         self.model = prisoners_game_model.prisoners_model(100, 1)
-        self.view = prisoners_view.main_view(1200, 900,self)
+        self.view = prisoners_view.main_view(800, 200,self)
 
     def change_model_prisoners(self, prisoners_num):
         prisoners_Assert(prisoners_num)
