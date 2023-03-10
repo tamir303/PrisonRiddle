@@ -1,5 +1,6 @@
 import prisoners_game_model
 import prisoners_view
+import queue
 
 def prisoners_Assert(prisoners_num):
     assert prisoners_num.isnumeric(), 'prisoners_num value must be integer'
@@ -27,3 +28,20 @@ class Controller(object):
 
     def start_game(self, optimized):
         self.model.play(bool(optimized))
+    
+    def get_game_details(self,game):
+        return self.model.games[game]
+    
+    def get_prisiner_details(self,prionser,game):
+        return self.model.games[game].prisoners[prionser]
+    
+    def get_next_Location(self,prisoner):
+        queue = []
+        for element in prisoner.checkBoxesList:
+            queue.append(element) 
+        yield queue.pop()
+        while len(queue) ==0:
+            yield queue.pop()
+        return None
+
+            

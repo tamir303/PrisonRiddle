@@ -1,4 +1,5 @@
 import game_view
+
 from settings_view import settings_view
 
 class main_view:
@@ -11,6 +12,8 @@ class main_view:
         # Run until the user asks to quit
         self.game = game_view.game_view()
         game_screen = self.game.get_game_screen()
+        locations_generator = self.controller.get_next_Location(self.controller.get_prisiner_details(0,0))
+        location = next(locations_generator)
         while self.game.running:
 
             # Did the user click the window close button?
@@ -18,7 +21,9 @@ class main_view:
                 self.eventHandler(event)
 
             # Fill the background with white
-            self.game.draw_game(3)
+            if self.game.draw_game(location):
+                location=next(locations_generator)
+
 
             # Flip the display
             self.game.update_game()

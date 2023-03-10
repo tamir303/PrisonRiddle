@@ -16,7 +16,7 @@ class settings_view:
         alignstr = '%dx%d+%d+%d' % (x_size, y_size, (self.screenwidth - x_size) / 2, (self.screenheight - y_size) / 2)
         self.root.geometry(alignstr)
         self.root.configure(bg='#F5DEB3')  # Set light brown background
-
+        self.game = 0
         # Buttons, Labels, TextInput ...
         font_style = font.Font(family='Arial', size=12, weight='bold')
         button_style = {'bg': '#8FBC8F', 'fg': 'white', 'font': font_style, 'activebackground': '#90EE90'}
