@@ -1,34 +1,43 @@
 import tkinter as tk
+from tkinter import font
 
 class settings_view:
     def __init__(self, x_size, y_size, controller):
-        # Main game settings
+           # Main game settings
         self.controller = controller
         self.root = tk.Tk()
         self.root.title('Prisoners Escape')
         self.root.resizable(width=False, height=False)
         self.screenwidth = self.root.winfo_screenwidth()
         self.screenheight = self.root.winfo_screenheight()
+        self.settings_screen = tk.Frame(self.root, bg='#f5deb3')
         alignstr = '%dx%d+%d+%d' % (x_size, y_size, (self.screenwidth - x_size) / 2, (self.screenheight - y_size) / 2)
         self.root.geometry(alignstr)
-        self.settings_screen = tk.Frame(self.root)
+        self.root.configure(bg='#F5DEB3')  # Set light brown background
 
         # Buttons, Labels, TextInput ...
-        self.startLabel = tk.Label(text="Press to start the game")
-        self.playButton = tk.Button(self.root, text='Play', command=lambda: self.play())
+        font_style = font.Font(family='Arial', size=12, weight='bold')
+        button_style = {'bg': '#8FBC8F', 'fg': 'white', 'font': font_style, 'activebackground': '#90EE90'}
 
-        self.prisonerstLabel = tk.Label(text="Enter amount of prisoners")
-        self.prisonersInput = tk.Text(self.root, height=5, width=15)
+        self.startLabel = tk.Label(text="Press to start the game", font=font_style, bg='#F5DEB3')
+        self.playButton = tk.Button(self.root, text='Play', command=lambda: self.play(), **button_style)
 
-        self.gamesLabel = tk.Label(text="Enter number of games")
-        self.gamesInput = tk.Text(self.root, height=5, width=15)
+        self.prisonerstLabel = tk.Label(text="Enter amount of prisoners", font=font_style, bg='#F5DEB3')
+        self.prisonersInput = tk.Scale(self.root, from_=2, to=1000, orient=tk.HORIZONTAL, length=400,
+                                       font=font_style, bg='#F5DEB3')
 
-        self.strategyLabel = tk.Label(text="Choose your strategy")
+        self.gamesLabel = tk.Label(text="Enter number of games", font=font_style, bg='#F5DEB3')
+        self.gamesInput = tk.Scale(self.root, from_=1, to=100, orient=tk.HORIZONTAL, length=400,
+                                    font=font_style, bg='#F5DEB3')
+
+        self.strategyLabel = tk.Label(text="Choose your strategy", font=font_style, bg='#F5DEB3')
         self.optimized = False
         self.optimizedRadioOn = tk.Radiobutton(self.root, text="Optimized", variable=self.optimized,
-                                               value=True, command=lambda: self.change_opt(True))
+                                               value=True, command=lambda: self.change_opt(True),
+                                               font=font_style, bg='#F5DEB3', activebackground='#90EE90')
         self.optimizedRadioOff = tk.Radiobutton(self.root, text="Random", variable=self.optimized,
-                                                value=False, command=lambda: self.change_opt(False))
+                                                value=False, command=lambda: self.change_opt(False),
+                                                font=font_style, bg='#F5DEB3', activebackground='#90EE90')
 
         self.packing()
 
@@ -37,8 +46,8 @@ class settings_view:
         self.controller.start_game(self.optimized)
 
     def __change_game_settings(self):
-        self.controller.change_model_prisoners(self.prisonersInput.get("1.0", 'end-1c'))
-        self.controller.change_model_games(self.gamesInput.get("1.0", 'end-1c'))
+        self.controller.change_model_prisoners(self.prisonersInput.get())
+        self.controller.change_model_games(self.gamesInput.get())
 
     def get_settings_screen(self):
         return self.settings_screen
@@ -58,5 +67,5 @@ class settings_view:
         self.gamesLabel.pack()
         self.gamesInput.pack()
         self.strategyLabel.pack()
-        self.optimizedRadioOn.pack(side=tk.BOTTOM, ipady=2)
-        self.optimizedRadioOff.pack(side=tk.BOTTOM, ipady=2)
+        self.optimizedRadioOn.pack(side=tk.LEFT, ipady=2)
+        self.optimizedRadioOff.pack(side=tk.LEFT, ipady=2)
