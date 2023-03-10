@@ -51,7 +51,7 @@ class settings_view:
         self.__change_game_settings()
         self.controller.start_game(self.optimized)
     def play_simulation(self):
-        my_thread = threading.Thread(target= self.main_view.run())
+        my_thread = threading.Thread(target= self.main_view.run(self))
         # Start the thread
         my_thread.start()
         # Wait for the thread to finish (optional)
