@@ -1,10 +1,12 @@
 import tkinter as tk
 from tkinter import font
-
+import prisoners_view
+import threading
 class settings_view:
-    def __init__(self, x_size, y_size, controller):
+    def __init__(self, x_size, y_size, controller,main_view):
            # Main game settings
         self.controller = controller
+        self.main_view =main_view
         self.root = tk.Tk()
         self.root.title('Prisoners Escape')
         self.root.resizable(width=False, height=False)
@@ -21,6 +23,9 @@ class settings_view:
 
         self.startLabel = tk.Label(text="Press to start the game", font=font_style, bg='#F5DEB3')
         self.playButton = tk.Button(self.root, text='Play', command=lambda: self.play(), **button_style)
+        
+        self.simulationLabel = tk.Label(text="Open Game Simulation", font=font_style, bg='#F5DEB3')
+        self.playSimulationButton = tk.Button(self.root, text='PlaySimulation', command=lambda: self.play_simulation(), **button_style)
 
         self.prisonerstLabel = tk.Label(text="Enter amount of prisoners", font=font_style, bg='#F5DEB3')
         self.prisonersInput = tk.Scale(self.root, from_=2, to=1000, orient=tk.HORIZONTAL, length=400,
@@ -38,13 +43,19 @@ class settings_view:
         self.optimizedRadioOff = tk.Radiobutton(self.root, text="Random", variable=self.optimized,
                                                 value=False, command=lambda: self.change_opt(False),
                                                 font=font_style, bg='#F5DEB3', activebackground='#90EE90')
-
+        
         self.packing()
+        self.root.mainloop()
 
     def play(self):
         self.__change_game_settings()
         self.controller.start_game(self.optimized)
-
+    def play_simulation(self):
+        my_thread = threading.Thread(target= self.main_view.run())
+        # Start the thread
+        my_thread.start()
+        # Wait for the thread to finish (optional)
+        my_thread.join()
     def __change_game_settings(self):
         self.controller.change_model_prisoners(self.prisonersInput.get())
         self.controller.change_model_games(self.gamesInput.get())
@@ -62,6 +73,8 @@ class settings_view:
         self.settings_screen.pack()
         self.startLabel.pack()
         self.playButton.pack()
+        self.simulationLabel.pack()
+        self.playSimulationButton.pack()
         self.prisonerstLabel.pack()
         self.prisonersInput.pack()
         self.gamesLabel.pack()
