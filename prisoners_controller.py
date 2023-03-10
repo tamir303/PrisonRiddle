@@ -15,14 +15,14 @@ class Controller(object):
 
     def __init__(self):
         self.model = prisoners_game_model.prisoners_model(100, 1)
-        self.view = prisoners_view.main_view(1200, 900,self)
+        self.view = prisoners_view.main_view(800, 200,self)
 
     def change_model_prisoners(self, prisoners_num):
-        prisoners_Assert(prisoners_num)
+        #prisoners_Assert(prisoners_num)
         self.model.change_prisoners_number(int(prisoners_num))
 
     def change_model_games(self, games_num):
-        games_Assert(games_num)
+        #games_Assert(games_num)
         self.model.change_games_number(int(games_num))
 
     def start_game(self, optimized):
