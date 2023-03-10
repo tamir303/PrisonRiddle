@@ -1,57 +1,5 @@
 import numpy
-import pygame
-
-class Prisoner(pygame.sprite.Sprite):
-
-    IMG = 'prisoner.png'
-
-    def __init__(self, pos):
-        super(Prisoner, self).__init__()
-        self.image = pygame.image.load('prisoner.png').convert_alpha()
-        self.image = pygame.transform.smoothscale(self.image, (100, 100))
-        self.image = pygame.transform.flip(self.image, 90, 0)
-        self.rect = self.image.get_rect(center=pos)
-        self.pos = pos
-
-    def update_location(self, pos):
-        self.pos = pos
-        self.rect = self.image.get_rect(center=pos)
-
-class Box(pygame.sprite.Sprite):
-
-    IMG_OPEN = 'box_open.png'
-    IMG_CLOSED = 'box_closed.png'
-
-    def __init__(self, pos, number):
-        super(Box, self).__init__()
-        self.image = pygame.image.load(Box.IMG_CLOSED).convert_alpha()
-        self.image = pygame.transform.smoothscale(self.image, (80, 80))
-        self.rect = self.image.get_rect(center=pos)
-        self.pos = pos
-        self.number = number
-
-    def open_box(self):
-        self.image = pygame.image.load(Box.IMG_OPEN).convert_alpha()
-        self.image = pygame.transform.smoothscale(self.image, (85, 85))
-
-    def close_box(self):
-        self.image = pygame.image.load(Box.IMG_CLOSED).convert_alpha()
-        self.image = pygame.transform.smoothscale(self.image, (80, 80))
-
-class Paper(pygame.sprite.Sprite):
-
-    IMG_PAPER = 'paper.png'
-
-    def __init__(self, pos=(0, 0)):
-        super(Paper, self).__init__()
-        self.image = pygame.image.load(Box.IMG_CLOSED).convert_alpha()
-        self.image = pygame.transform.smoothscale(self.image, (40, 40))
-        self.rect = self.image.get_rect(center=pos)
-        self.pos = pos
-
-    def update_location(self, pos):
-        self.pos = pos
-        self.rect = self.image.get_rect(center=pos)
+from sprites import *
 
 class game_view:
 
@@ -78,7 +26,7 @@ class game_view:
         self.speed = speed
         self.prisoner = Prisoner(PRISONERS_START_POS)
         self.boxes = dict()
-        self.paiper = Paper()
+        self.paper = Paper()
         for r in range(number_of_boxes // BOXES_PER_ROW):
             for c in range(BOXES_PER_ROW):
                 new_pos = (BOX_START_POS[0] + c*BOXES_SHIFT, BOX_START_POS[1] - r*BOXES_SHIFT)
@@ -115,9 +63,9 @@ class game_view:
     def animate_box(self, number):
         curr_box = self.boxes[number]
         curr_box.open_box()
-        self.paiper.update(curr_box.pos)
+        self.paper.update(curr_box.pos)
         self.screen.blit(curr_box.image, curr_box.rect)
-        self.screen.blit(self.paiper.image, self.paiper.rect)
+        self.screen.blit(self.paper.image, self.paper.rect)
         self.update_game()
         pygame.time.delay(500)
         curr_box.close_box()
