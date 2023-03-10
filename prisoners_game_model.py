@@ -67,26 +67,27 @@ class prisoners_model:
         for prisoner in range(number_of_boxes):
             print("prisoner =", prisoner)
             checked_boxes = []
+            pick = 0
             while True:
                 picked_box = random.randint(0, number_of_boxes - 1)
                 if picked_box not in checked_boxes:
+                    print("try number =", pick, " picked_box =", picked_box)
                     checked_boxes.append(picked_box)
+                    pick += 1
                     if picked_box == prisoner:
                         break
             if len(checked_boxes) <= (number_of_boxes // 2):
                 prisoners_status_list[prisoner] = 1
-            print("list l:", end=" ")
-            for index in range(number_of_boxes):
-                print(boxes[index], end=" ")
             print()
-            print("list checked_boxes:", end=" ")
-            for index in range(len(checked_boxes)):
-                print(checked_boxes[index], end=" ")
+            print("boxes values list by order:", end=" ")
+            for val in checked_boxes:
+                print(val, end=" ")
             print()
             if len(checked_boxes) <= (number_of_boxes // 2):
                 print("prisoner number ", prisoner, " succeeded ", "chain length = ", len(checked_boxes))
             else:
                 print("prisoner number ", prisoner, " failed ", "chain length =", len(checked_boxes))
+            checked_boxes.clear()
         print("number of prisoners that find their number is:", sum(prisoners_status_list), "\n    from",
               number_of_boxes, " prisoners.\n")
         if sum(prisoners_status_list) == number_of_boxes:
@@ -120,18 +121,15 @@ class prisoners_model:
                         picked_box = boxes[picked_box]
                         checked_boxes.append(picked_box)
 
-            print("boxes index list by order:", end=" ")
-            for index in range(number_of_boxes):
-                print(boxes[index], end=" ")
-            print()
             print("boxes values list by order:", end=" ")
-            for index in range(len(checked_boxes)):
-                print(checked_boxes[index], end=" ")
+            for val in checked_boxes:
+                print(val, end=" ")
             print()
             if success:
                 print("prisoner number ", prisoner, " succeeded ", "chain length =", (pick + 1))
             else:
                 print("prisoner number ", prisoner, " failed ", "chain length =", (pick + 1))
+            checked_boxes.clear()
 
         print("number of prisoners that found their number is:", sum(prisoners_status_list), "\n    from",
               number_of_boxes, " prisoners.\n")
