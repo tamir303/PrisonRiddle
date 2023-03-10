@@ -3,6 +3,8 @@ from sprites import *
 
 class game_view:
 
+    TRANSPARENT = (0, 0, 0, 0)
+
     def __init__(self, number_of_boxes=10, speed=0.4):
         self.pygame = pygame
         self.pygame.init()  # initialize all
@@ -62,13 +64,15 @@ class game_view:
 
     def animate_box(self, number):
         curr_box = self.boxes[number]
+        curr_box.image.fill(game_view.TRANSPARENT)
+        self.screen.blit(curr_box.image, curr_box.rect)
         curr_box.open_box()
-        self.paper.update(curr_box.pos)
         self.screen.blit(curr_box.image, curr_box.rect)
         self.screen.blit(self.paper.image, self.paper.rect)
-        self.update_game()
         pygame.time.delay(500)
-        curr_box.close_box()
 
+    def close_all_boxes(self):
+        for box in self.boxes.values():
+            box.close_box()
 
 
