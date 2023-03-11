@@ -40,7 +40,7 @@ class Controller(object):
         for element in prisoner.checkBoxesList:
             queue.append(element) 
         yield queue.pop()
-        while len(queue) ==0:
+        while len(queue) >0:
             yield queue.pop()
         return None
 

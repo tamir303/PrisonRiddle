@@ -22,8 +22,9 @@ class main_view:
 
             # Fill the background with white
             if self.game.draw_game(location):
-                location=next(locations_generator)
-
+                nextlocation=next(locations_generator)
+                if nextlocation is not None:
+                    location=nextlocation
 
             # Flip the display
             self.game.update_game()
