@@ -34,10 +34,10 @@ class game_view:
         self.paper = Paper()
 
         number_of_boxes = min(number_of_boxes, BOXES_MAX_NUMBER)
-        for r in range(number_of_boxes // BOXES_PER_ROW):
-            for c in range(BOXES_PER_ROW):
+        for r in range(max(1, number_of_boxes // BOXES_PER_ROW)):
+            for c in range(min(number_of_boxes, BOXES_PER_ROW)):
                 new_pos = (BOX_START_POS[0] + c*BOXES_SHIFT,
-                           BOX_START_POS[1] - r*BOXES_SHIFT)
+                           BOX_START_POS[1] + r*BOXES_SHIFT)
                 self.boxes[BOXES_PER_ROW * r + c] = Box(new_pos)
 
     def get_game_screen(self):
@@ -53,7 +53,7 @@ class game_view:
             self.screen.blit(box.image, box.rect)
         self.screen.blit(self.prisoner.image, self.prisoner.rect)
         if expect is not None:
-            moveTo = numpy.random.randint(0, len(self.boxes) - 1)
+            moveTo = numpy.random.randint(0, len(self.boxes.values) - 1)
             self.move_prisoner(moveTo)
             if self.prisoner.rect.colliderect(self.boxes[moveTo].rect):
                 print("Open Box {}".format(moveTo))
@@ -65,8 +65,8 @@ class game_view:
     def move_prisoner(self, moveTo):
         p_corr = self.prisoner.pos
         b_corr = self.boxes[moveTo].pos
-        vect = tuple(map(lambda p, b: numpy.sign(b - p) *
-                     self.speed + p), zip(p_corr, b_corr))
+        vect = tuple(map(lambda element: numpy.sign(element[1] - element[0]) *
+                     self.speed + element[0], zip(p_corr, b_corr)))
         self.prisoner.update_location(vect)
 
     def animate_box(self, moveTo, expect):
