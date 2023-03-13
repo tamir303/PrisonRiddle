@@ -53,7 +53,7 @@ class game_view:
             self.screen.blit(box.image, box.rect)
         self.screen.blit(self.prisoner.image, self.prisoner.rect)
         if expect is not None:
-            moveTo = numpy.random.randint(0, len(self.boxes.values) - 1)
+            moveTo = numpy.random.randint(0, len(self.boxes) - 1)
             self.move_prisoner(moveTo)
             if self.prisoner.rect.colliderect(self.boxes[moveTo].rect):
                 print("Open Box {}".format(moveTo))
