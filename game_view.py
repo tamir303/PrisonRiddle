@@ -18,9 +18,6 @@ class game_view:
             (screen_width, screen_height))  # display screen
 
         PRISONERS_START_POS = [screen_width // 8, screen_height // 8]
-        BOX_START_POS = [screen_width // 2, screen_height // 3]
-        BOXES_PER_ROW = 5
-        BOXES_SHIFT = screen_width / 9
         BOXES_MAX_NUMBER = 50
 
         self.active_tb = None
@@ -28,17 +25,13 @@ class game_view:
         self.background = pygame.transform.smoothscale(
             self.background, self.screen.get_size())
 
+        number_of_boxes = min(number_of_boxes, BOXES_MAX_NUMBER)
+        self.boxes_target = self.create_target_list(number_of_boxes)
         self.speed = speed
         self.prisoner = Prisoner(PRISONERS_START_POS)
-        self.boxes = dict()
+        self.boxes = self.create_boxes_sprite_list(
+            number_of_boxes, screen_width, screen_height)
         self.paper = Paper()
-
-        number_of_boxes = min(number_of_boxes, BOXES_MAX_NUMBER)
-        for r in range(max(1, number_of_boxes // BOXES_PER_ROW)):
-            for c in range(min(number_of_boxes, BOXES_PER_ROW)):
-                new_pos = (BOX_START_POS[0] + c*BOXES_SHIFT,
-                           BOX_START_POS[1] + r*BOXES_SHIFT)
-                self.boxes[BOXES_PER_ROW * r + c] = Box(new_pos)
 
     def get_game_screen(self):
         return self.screen
@@ -53,10 +46,11 @@ class game_view:
             self.screen.blit(box.image, box.rect)
         self.screen.blit(self.prisoner.image, self.prisoner.rect)
         if expect is not None:
-            moveTo = numpy.random.randint(0, len(self.boxes.values) - 1)
+            moveTo = self.boxes_target[0]
             self.move_prisoner(moveTo)
             if self.prisoner.rect.colliderect(self.boxes[moveTo].rect):
                 print("Open Box {}".format(moveTo))
+                self.boxes_target.pop(0)
                 self.animate_box(moveTo, expect)
                 return True
             self.update_game()
@@ -81,3 +75,21 @@ class game_view:
     def close_all_boxes(self):
         for box in self.boxes.values():
             box.close_box()
+
+    def create_target_list(self, number_of_boxes):
+        target = list(range(1, number_of_boxes))
+        numpy.random.shuffle(target)
+        return target
+
+    def create_boxes_sprite_list(self, number_of_boxes, screen_width, screen_height):
+        boxes_dict = dict()
+        BOX_START_POS = [screen_width // 2, screen_height // 3]
+        BOXES_PER_ROW = 5
+        BOXES_SHIFT = screen_width / 9
+
+        for r in range(max(1, number_of_boxes // BOXES_PER_ROW)):
+            for c in range(min(number_of_boxes, BOXES_PER_ROW)):
+                new_pos = (BOX_START_POS[0] + c*BOXES_SHIFT,
+                           BOX_START_POS[1] + r*BOXES_SHIFT)
+                boxes_dict[BOXES_PER_ROW * r + c] = Box(new_pos)
+        return boxes_dict

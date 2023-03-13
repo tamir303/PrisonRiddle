@@ -1,23 +1,6 @@
 import sys
 import random
 
-# self.prisoners = [
-#     {
-#         "PrisonerNumber": i,
-#         "ChainLength": chainLength,
-#         "CheckBoxesList": checkBoxesList,
-#         "IsSuccess": isSuccess,
-#         "NumberOfTries": counter
-#     }
-#     for i in range(1, prisoners_num + 1)
-# ]
-# self.prisoner_data = {
-#     "prisoners": self.prisoners,
-#     "numberOfPrisoners": prisoners_num,
-#     "numberOfGames": games_num,
-#     "successPerGame": 0
-# }
-
 
 class prisoner_struct:
     def __init__(self, number, checkBoxesList, isSuccess):
