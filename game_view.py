@@ -10,7 +10,6 @@ class game_view:
         self.pygame = pygame
         self.pygame.init()  # initialize all
         self.running = True
-
         info = pygame.display.Info()
         screen_width = int(info.current_w * 0.6)
         screen_height = int(info.current_h * 0.6)
@@ -18,7 +17,7 @@ class game_view:
             (screen_width, screen_height))  # display screen
 
         PRISONERS_START_POS = [screen_width // 8, screen_height // 8]
-        BOXES_MAX_NUMBER = 50
+        BOXES_MAX_NUMBER = 25
 
         self.active_tb = None
         self.background = pygame.image.load(ASSETS_FOLDER + "prison_floor.jpg")
@@ -77,18 +76,19 @@ class game_view:
             box.close_box()
 
     def create_target_list(self, number_of_boxes):
-        target = list(range(1, number_of_boxes))
+        target = list(range(0, number_of_boxes))
         numpy.random.shuffle(target)
         return target
 
     def create_boxes_sprite_list(self, number_of_boxes, screen_width, screen_height):
         boxes_dict = dict()
-        BOX_START_POS = [screen_width // 2, screen_height // 3]
+        BOX_START_POS = [screen_width // 2, screen_height // 8]
         BOXES_PER_ROW = 5
         BOXES_SHIFT = screen_width / 9
+        LAST_ROW = number_of_boxes // BOXES_PER_ROW
 
-        for r in range(max(1, number_of_boxes // BOXES_PER_ROW)):
-            for c in range(min(number_of_boxes, BOXES_PER_ROW)):
+        for r in range(max(1, int(numpy.ceil(number_of_boxes / BOXES_PER_ROW)))):
+            for c in range(min(number_of_boxes, BOXES_PER_ROW) if r + 1 != LAST_ROW else number_of_boxes % BOXES_PER_ROW):
                 new_pos = (BOX_START_POS[0] + c*BOXES_SHIFT,
                            BOX_START_POS[1] + r*BOXES_SHIFT)
                 boxes_dict[BOXES_PER_ROW * r + c] = Box(new_pos)
