@@ -7,8 +7,10 @@ class main_view:
         self.controller = controller
         self.settings = settings_view(300, 350, self.controller, self)
         self.game = None
+        self.is_game_running = False
 
     def run(self, setting):
+        self.is_game_running = True
         CHOSEN_SIMULATION_PRISONER = self.controller.get_prisoner_details(0, 0)                 # PRISONER 0 GAME 0
         locations_generator = self.controller.get_next_location(CHOSEN_SIMULATION_PRISONER)
         self.settings = setting
@@ -17,7 +19,7 @@ class main_view:
         game_screen = self.game.get_game_screen()
 
         location = next(locations_generator)
-        while self.game.running:
+        while self.is_game_running:
 
             # Did the user click the window close button?
             for event in self.game.pygame.event.get():
@@ -25,9 +27,9 @@ class main_view:
 
             # Fill the background with white
             if self.game.draw_game(location):
-                nextlocation = next(locations_generator)
-                if nextlocation is not None:
-                    location = nextlocation
+                location =self.get_location_from_generator(locations_generator)
+                if(location is None):
+                    self.InitilizeEndSequancea()
 
             # Flip the display
             self.game.update_game()
@@ -39,3 +41,12 @@ class main_view:
     def eventHandler(self, event):
         if event.type == self.game.pygame.QUIT:
             self.game.running = False
+
+    def get_location_from_generator(self,iterable):
+        try:
+            first = next(iterable)
+        except StopIteration:
+            return None
+        return first
+    def InitilizeEndSequancea(self):
+        self.is_game_running = False
