@@ -5,28 +5,38 @@ from sprites import *
 class game_view:
 
     TRANSPARENT = (0, 0, 0, 0)
+    BACKGROUND_PATH = ASSETS_FOLDER + 'prison_floor.jpg'
 
     def __init__(self, number_of_boxes=10, speed=0.4):
+        # initialize all
         self.pygame = pygame
-        self.pygame.init()  # initialize all
+        self.pygame.init()
+        # Start game run condition
         self.running = True
+        # Fetch user's screen information
         info = pygame.display.Info()
+        # Set screen width
         screen_width = int(info.current_w * 0.6)
+        # Set screen height
         screen_height = int(info.current_h * 0.6)
         self.screen = pygame.display.set_mode(
-            (screen_width, screen_height))  # display screen
+            (screen_width, screen_height))  # Display screen
 
+        # Set
+        # Set prisoner's screen start position
         PRISONERS_START_POS = [screen_width // 8, screen_height // 8]
+        # Max number of displayed boxes on screen
         BOXES_MAX_NUMBER = 25
 
-        self.active_tb = None
-        self.background = pygame.image.load(ASSETS_FOLDER + "prison_floor.jpg")
+        self.background = pygame.image.load(
+            game_view.BACKGROUND_PATH)        # Screen background
         self.background = pygame.transform.smoothscale(
-            self.background, self.screen.get_size())
+            self.background, self.screen.get_size())                          # Adjust background to screen size
 
+        # Initiate sprites and simulation flow
         number_of_boxes = min(number_of_boxes, BOXES_MAX_NUMBER)
-        self.boxes_target = self.create_target_list(number_of_boxes)
         self.speed = speed
+        self.boxes_target = self.create_target_list(number_of_boxes)
         self.prisoner = Prisoner(PRISONERS_START_POS)
         self.boxes = self.create_boxes_sprite_list(
             number_of_boxes, screen_width, screen_height)
