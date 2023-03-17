@@ -86,7 +86,7 @@ class game_view:
             box.close_box()
 
     def create_target_list(self, number_of_boxes):
-        target = list(range(0, number_of_boxes))
+        target = list(range(0, number_of_boxes -1))
         numpy.random.shuffle(target)
         return target
 

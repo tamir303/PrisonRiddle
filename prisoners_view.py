@@ -5,7 +5,7 @@ from game_view import game_view
 class main_view:
     def __init__(self, controller=None):
         self.controller = controller
-        self.settings = settings_view(300, 350, self.controller, self)
+        self.settings = settings_view(1000, 700, self.controller, self)
         self.game = None
         self.is_game_running = False
 

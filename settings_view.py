@@ -62,6 +62,7 @@ class settings_view:
 
     def play(self):
         self.__change_game_settings()
+        self.text_area.delete("1.0", tk.END)
         self.update_text(self.controller.start_game(self.optimized))
 
     def play_simulation(self):
