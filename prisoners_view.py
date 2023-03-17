@@ -18,8 +18,7 @@ class main_view:
             CHOSEN_SIMULATION_PRISONER)
 
         self.settings = setting
-        self.game = game_view(number_of_boxes=len(
-            CHOSEN_SIMULATION_GAME.prisoners))
+        self.game = game_view(number_of_boxes=len(CHOSEN_SIMULATION_GAME.prisoners))
 
         # Run until the user asks to quit
         game_screen = self.game.get_game_screen()
@@ -34,7 +33,7 @@ class main_view:
             if self.game.draw_game(location):
                 location = self.get_location_from_generator(
                     locations_generator)
-                if (location is None):
+                if location is None:
                     self.InitilizeEndSequancea()
 
             # Flip the display
@@ -42,7 +41,7 @@ class main_view:
             self.settings.update_settings()
 
         # Done! Time to quit.
-        game_screen.quit()
+        self.game.display_results()
 
     def eventHandler(self, event):
         if event.type == self.game.pygame.QUIT:
