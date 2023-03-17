@@ -62,8 +62,7 @@ class settings_view:
 
     def play(self):
         self.__change_game_settings()
-        self.text_area.delete("1.0", tk.END)
-        self.update_text(self.controller.start_game(self.optimized))
+        self.controller.start_game(self.optimized)
 
     def play_simulation(self):
         my_thread = threading.Thread(target=self.main_view.run(self))
@@ -84,9 +83,6 @@ class settings_view:
 
     def change_opt(self, val):
         self.optimized = val
-        
-    def update_text(self,new_text):
-        self.text_area.insert(tk.END, new_text)
 
     def packing(self):
     # Left side
