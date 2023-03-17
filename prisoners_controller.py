@@ -36,6 +36,8 @@ class Controller(object):
 
     def get_prisoner_details(self, prisoner, game):
         return self.model.games[game].prisoners[prisoner]
+    def get_model_to_string(self):
+        return self.model.read_game()
 
     def get_next_location(self, prisoner):
         queue = []

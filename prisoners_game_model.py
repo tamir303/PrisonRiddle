@@ -47,7 +47,7 @@ class prisoners_model:
         """
         :return:
         """
-        # sys.stdout = open("PrisonersReults.txt", "w")
+        sys.stdout = open("PrisonersReults.txt", "w")
         success = 0
         strategy = {True: self.optimized_prison_round,
                     False: self.unoptimized_prison_round}[optimized]
@@ -74,7 +74,7 @@ class prisoners_model:
         else:
             print("probability by random picking:\n",
                   "1/(2^n) =", 1 / 2**self.prisoners_num)
-        # sys.stdout.close()
+        sys.stdout = sys.__stdout__
 
     def unoptimized_prison_round(self, boxes, game):
         """
@@ -162,3 +162,8 @@ class prisoners_model:
             return True
         else:
             return False
+
+    def read_game(self):
+        f = open("PrisonersReults.txt", "r")
+        data = f.read()
+        return data

@@ -63,6 +63,8 @@ class settings_view:
     def play(self):
         self.__change_game_settings()
         self.controller.start_game(self.optimized)
+        self.text_area.delete("1.0", tk.END)
+        self.text_area.insert(tk.END,self.controller.get_model_to_string())
 
     def play_simulation(self):
         my_thread = threading.Thread(target=self.main_view.run(self))
