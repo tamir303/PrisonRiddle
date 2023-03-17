@@ -54,13 +54,16 @@ class settings_view:
         self.optimizedRadioOff = tk.Radiobutton(self.root, text="Random", variable=self.optimized,
                                                 value=False, command=lambda: self.change_opt(False),
                                                 font=font_style, bg='#F5DEB3', activebackground='#90EE90')
-
+        self.text_area = tk.Text(self.root,height= 40,width=50)
+        self.scrollbar = tk.Scrollbar(self.root, command=self.text_area.yview)
+        self.text_area.config(yscrollcommand=self.scrollbar.set)
         self.packing()
         self.root.mainloop()
 
     def play(self):
         self.__change_game_settings()
-        self.controller.start_game(self.optimized)
+        self.text_area.delete("1.0", tk.END)
+        self.update_text(self.controller.start_game(self.optimized))
 
     def play_simulation(self):
         my_thread = threading.Thread(target=self.main_view.run(self))
@@ -81,17 +84,27 @@ class settings_view:
 
     def change_opt(self, val):
         self.optimized = val
+        
+    def update_text(self,new_text):
+        self.text_area.insert(tk.END, new_text)
 
     def packing(self):
-        self.settings_screen.pack()
-        self.startLabel.pack()
-        self.playButton.pack()
-        self.simulationLabel.pack()
-        self.playSimulationButton.pack()
-        self.prisonerstLabel.pack()
-        self.prisonersInput.pack()
-        self.gamesLabel.pack()
-        self.gamesInput.pack()
-        self.strategyLabel.pack()
-        self.optimizedRadioOn.pack(side=tk.LEFT, ipady=2)
-        self.optimizedRadioOff.pack(side=tk.LEFT, ipady=2)
+    # Left side
+        self.settings_screen.pack(side=tk.LEFT, padx=10, pady=10)
+        self.text_area.pack(side=tk.RIGHT, anchor=tk.N,padx=10, pady=10,expand=True,fill=tk.BOTH)
+        self.scrollbar.pack(side=tk.RIGHT,fill=tk.Y)
+
+        self.startLabel.pack(side=tk.TOP, anchor=tk.W)
+        self.playButton.pack(side=tk.TOP,anchor=tk.W,pady=5)
+        self.simulationLabel.pack(side=tk.TOP,anchor=tk.W,pady=5)
+        self.playSimulationButton.pack(side=tk.TOP,anchor=tk.W,pady=5)
+        self.prisonerstLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        self.prisonersInput.pack(side=tk.TOP,anchor=tk.W,pady=55)
+        self.gamesLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        self.gamesInput.pack(side=tk.TOP,anchor=tk.W,pady=5)
+        self.strategyLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        self.optimizedRadioOn.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        self.optimizedRadioOff.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        
+        # Right side
+

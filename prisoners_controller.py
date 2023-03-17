@@ -29,7 +29,7 @@ class Controller(object):
         self.model.change_games_number(int(games_num))
 
     def start_game(self, optimized):
-        self.model.play(bool(optimized))
+        return self.model.play(bool(optimized))
 
     def get_game_details(self, game):
         return self.model.games[game]
