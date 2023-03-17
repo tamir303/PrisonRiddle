@@ -1,3 +1,5 @@
+import pygame
+
 from settings_view import settings_view
 from game_view import game_view
 
@@ -9,11 +11,11 @@ class main_view:
         self.game = None
         self.is_game_running = False
 
-    def run(self, setting,game_num,prisoner_num):
+    def run(self, setting, game_num, prisoner_num):
         self.is_game_running = True
         
-        CHOSEN_SIMULATION_GAME = self.controller.get_game_details(game_num)
-        CHOSEN_SIMULATION_PRISONER = self.controller.get_prisoner_details(game_num, prisoner_num)
+        CHOSEN_SIMULATION_GAME = self.controller.get_game_details(0)
+        CHOSEN_SIMULATION_PRISONER = self.controller.get_prisoner_details(0, 0)
 
         locations_generator = self.controller.get_next_location(
             CHOSEN_SIMULATION_PRISONER)
@@ -32,21 +34,20 @@ class main_view:
 
             # Fill the background with white
             if self.game.draw_game(location):
-                location = self.get_location_from_generator(
-                    locations_generator)
+                location = self.get_location_from_generator(locations_generator)
                 if location is None:
                     self.InitilizeEndSequancea()
 
             # Flip the display
             self.game.update_game()
             self.settings.update_settings()
-
-        # Done! Time to quit.
-        self.game.display_results()
+            if not self.is_game_running:
+                # Done! Time to quit.
+                self.game.display_results()
 
     def eventHandler(self, event):
-        if event.type == self.game.pygame.QUIT:
-            self.game.running = False
+        if event.type == pygame.KEYDOWN:
+            pygame.quit()
 
     def get_location_from_generator(self, iterable):
         try:
