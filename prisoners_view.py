@@ -9,10 +9,11 @@ class main_view:
         self.game = None
         self.is_game_running = False
 
-    def run(self, setting):
+    def run(self, setting,game_num,prisoner_num):
         self.is_game_running = True
-        CHOSEN_SIMULATION_GAME = self.controller.get_game_details(0)
-        CHOSEN_SIMULATION_PRISONER = self.controller.get_prisoner_details(0, 0)
+        
+        CHOSEN_SIMULATION_GAME = self.controller.get_game_details(game_num)
+        CHOSEN_SIMULATION_PRISONER = self.controller.get_prisoner_details(game_num, prisoner_num)
 
         locations_generator = self.controller.get_next_location(
             CHOSEN_SIMULATION_PRISONER)

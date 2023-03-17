@@ -31,9 +31,9 @@ class settings_view:
             self.root, text='Play', command=lambda: self.play(), **button_style)
 
         self.simulationLabel = tk.Label(
-            text="Open Game Simulation", font=font_style, bg='#F5DEB3')
+            text="Open Game Simulation", font=font_style, bg='#F5DEB3',state ='disabled')
         self.playSimulationButton = tk.Button(
-            self.root, text='PlaySimulation', command=lambda: self.play_simulation(), **button_style)
+            self.root, text='PlaySimulation', command=lambda: self.play_simulation(), **button_style ,state ='disabled')
 
         self.prisonerstLabel = tk.Label(
             text="Enter amount of prisoners", font=font_style, bg='#F5DEB3')
@@ -57,6 +57,12 @@ class settings_view:
         self.text_area = tk.Text(self.root,height= 40,width=60)
         self.scrollbar = tk.Scrollbar(self.root, command=self.text_area.yview)
         self.text_area.config(yscrollcommand=self.scrollbar.set)
+        
+        self.gameInputLabel = tk.Label(self.root, text="Enter game number:", font=font_style, bg='#F5DEB3',state='disable')
+        self.gameInputentry = tk.Entry(self.root, validate="key",state='disable')
+        self.prisoner_number_InputLabel = tk.Label(self.root, text="Enter game number:", font=font_style, bg='#F5DEB3',state='disable')
+        self.prisoner_number_input_entry = tk.Entry(self.root, validate="key",state='disable')
+
         self.packing()
         self.root.mainloop()
 
@@ -64,10 +70,17 @@ class settings_view:
         self.__change_game_settings()
         self.controller.start_game(self.optimized)
         self.text_area.delete("1.0", tk.END)
+        self.simulationLabel['state']= 'normal'
+        self.playSimulationButton['state'] = 'normal'
+        self.gameInputLabel['state']='normal'
+        self.gameInputentry['state']='normal'
+        self.prisoner_number_input_entry['state']='normal'
+        self.prisoner_number_InputLabel['state']='normal'
         self.text_area.insert(tk.END,self.controller.get_model_to_string())
 
     def play_simulation(self):
-        my_thread = threading.Thread(target=self.main_view.run(self))
+        ##TODO add input check on text entery
+        my_thread = threading.Thread(target=self.main_view.run(int(self,self.gameInputentry.get()),int(self.prisoner_number_input_entry.get())))
         # Start the thread
         my_thread.start()
         # Wait for the thread to finish (optional)
@@ -85,7 +98,15 @@ class settings_view:
 
     def change_opt(self, val):
         self.optimized = val
-
+        
+    def validate_integer(text):
+        if text.isdigit():
+            return True
+        elif text == "":
+            return True
+        else:
+            return False
+        
     def packing(self):
     # Left side
         self.settings_screen.pack(side=tk.LEFT, padx=10, pady=10)
@@ -94,7 +115,13 @@ class settings_view:
 
         self.startLabel.pack(side=tk.TOP, anchor=tk.W)
         self.playButton.pack(side=tk.TOP,anchor=tk.W,pady=5)
+        
+        self.gameInputLabel.pack(side=tk.TOP,anchor=tk.W,pady=5)
+        self.gameInputentry.pack(side=tk.TOP,anchor=tk.W,pady=5)
+        self.prisoner_number_InputLabel.pack(side=tk.TOP,anchor=tk.W,pady=5)
+        self.prisoner_number_input_entry.pack(side=tk.TOP,anchor=tk.W,pady=5)
         self.simulationLabel.pack(side=tk.TOP,anchor=tk.W,pady=5)
+        
         self.playSimulationButton.pack(side=tk.TOP,anchor=tk.W,pady=5)
         self.prisonerstLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.prisonersInput.pack(side=tk.TOP,anchor=tk.W,pady=5)

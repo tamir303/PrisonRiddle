@@ -6,12 +6,11 @@ try number = 1  picked_box = 0
 boxes values list by order: 1 0 
 prisoner number  0  failed  chain length = 2
 prisoner = 1
-try number = 0  picked_box = 0
-try number = 1  picked_box = 1
+try number = 0  picked_box = 1
 
-boxes values list by order: 0 1 
-prisoner number  1  failed  chain length = 2
-number of prisoners that find their number is: 0 
+boxes values list by order: 1 
+prisoner number  1  succeeded  chain length =  1
+number of prisoners that find their number is: 1 
     from 2  prisoners.
 
 n = 2  k = 1  s =  0 
