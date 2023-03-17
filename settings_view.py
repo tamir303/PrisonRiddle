@@ -60,7 +60,7 @@ class settings_view:
         
         self.gameInputLabel = tk.Label(self.root, text="Enter game number:", font=font_style, bg='#F5DEB3',state='disable')
         self.gameInputentry = tk.Entry(self.root, validate="key",state='disable')
-        self.prisoner_number_InputLabel = tk.Label(self.root, text="Enter game number:", font=font_style, bg='#F5DEB3',state='disable')
+        self.prisoner_number_InputLabel = tk.Label(self.root, text="Enter Prioner number:", font=font_style, bg='#F5DEB3',state='disable')
         self.prisoner_number_input_entry = tk.Entry(self.root, validate="key",state='disable')
 
         self.packing()
@@ -80,7 +80,13 @@ class settings_view:
 
     def play_simulation(self):
         ##TODO add input check on text entery
-        my_thread = threading.Thread(target=self.main_view.run(int(self,self.gameInputentry.get()),int(self.prisoner_number_input_entry.get())))
+     ##   if self.validate_integer(self.gameInputentry.get())==False or self.validate_integer(self.prisoner_number_input_entry.get() == False):
+       ##     return
+        input =self.controller.input_check(self.gameInputentry.get(),self.prisoner_number_input_entry.get())
+        if input == False: 
+            print("fail input")
+            return
+        my_thread = threading.Thread(target=self.main_view.run(self,input[0],input[1]))
         # Start the thread
         my_thread.start()
         # Wait for the thread to finish (optional)
@@ -99,7 +105,7 @@ class settings_view:
     def change_opt(self, val):
         self.optimized = val
         
-    def validate_integer(text):
+    def validate_integer(self,text):
         if text.isdigit():
             return True
         elif text == "":
@@ -112,6 +118,13 @@ class settings_view:
         self.settings_screen.pack(side=tk.LEFT, padx=10, pady=10)
         self.scrollbar.pack(side=tk.RIGHT,fill=tk.Y,padx=10)
         self.text_area.pack(side=tk.RIGHT, anchor=tk.N, pady=10,expand=True,fill=tk.Y)
+        
+        self.prisonerstLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        self.prisonersInput.pack(side=tk.TOP,anchor=tk.W,pady=5)
+        
+        self.gamesLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        self.gamesInput.pack(side=tk.TOP,anchor=tk.W,pady=5)
+        
 
         self.startLabel.pack(side=tk.TOP, anchor=tk.W)
         self.playButton.pack(side=tk.TOP,anchor=tk.W,pady=5)
@@ -123,10 +136,8 @@ class settings_view:
         self.simulationLabel.pack(side=tk.TOP,anchor=tk.W,pady=5)
         
         self.playSimulationButton.pack(side=tk.TOP,anchor=tk.W,pady=5)
-        self.prisonerstLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
-        self.prisonersInput.pack(side=tk.TOP,anchor=tk.W,pady=5)
-        self.gamesLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
-        self.gamesInput.pack(side=tk.TOP,anchor=tk.W,pady=5)
+
+
         self.strategyLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.optimizedRadioOn.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.optimizedRadioOff.pack(side=tk.TOP, anchor=tk.W, pady=5)
