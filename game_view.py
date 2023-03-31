@@ -220,5 +220,6 @@ class game_view:
         Display the results of the game.
         """
         self.pygame.draw.lines(self.screen, (255, 0, 0), False, self.lines_path, 3)
+        self.background.blit(self.screen, (0, 0))
         self.update_game()
-        self.pygame.time.delay(20000)
+    
