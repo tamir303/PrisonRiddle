@@ -45,7 +45,8 @@ class prisoners_model:
 
     def play(self, optimized):
         """
-        :return:
+        :param optimized: what strategy will the prisoners apply
+        :return: None
         """
         sys.stdout = open("PrisonersReults.txt", "w")
         success = 0
@@ -73,11 +74,12 @@ class prisoners_model:
                   "1 - (1/((n/2)+1) + 1/((n/2)+2) + ...) =", 1 - success)
         else:
             print("probability by random picking:\n",
-                  "1/(2^n) =", 1 / 2**self.prisoners_num)
+                  "1/(2^n) =", 1 / 2 ** self.prisoners_num)
         sys.stdout = sys.__stdout__
 
     def unoptimized_prison_round(self, boxes, game):
         """
+        :param game: Number of a specific game
         :param boxes: List of all boxes containing the prisoner's number by order
         :return: True - All prisoners found their number, else False
         """
@@ -120,6 +122,7 @@ class prisoners_model:
 
     def optimized_prison_round(self, boxes, game):
         """
+        :param game: Number of a specific game
         :param boxes: List of all boxes containing the prisoner's number by order
         :return: True - All prisoners found their number, else False
         """
