@@ -2,19 +2,6 @@ import prisoners_game_model
 import prisoners_view
 import re
 
-
-def prisoners_Assert(prisoners_num):
-    assert prisoners_num.isnumeric(), 'prisoners_num value must be integer'
-    assert int(prisoners_num) >= 2, 'numbers of prisoners =", {}, " prisoners must be > 1'.format(
-        prisoners_num)
-
-
-def games_Assert(games_num):
-    assert games_num.isnumeric(), 'games_num value must be integer'
-    assert int(games_num) > 0, 'numbers of prisoners =", {}, " prisoners must be > 1'.format(
-        games_num)
-
-
 class Controller(object):
 
     def __init__(self):
@@ -34,22 +21,7 @@ class Controller(object):
 
     def get_game_details(self, game):
         return self.model.games[game]
-    #def input_check(self,game_Input,prisoner_number_input):
-        # regex = r'^-?\d+(?:\.\d+)?$'
-        # if bool(re.match(regex, game_Input) or prisoner_number_input):
-        #     game_input = int(str(game_Input)) -1
-        #     prisoner_input =int(str(prisoner_number_input))
-            
-        #     if game_input > len(self.model.games.keys) or game_Input <0:
-        #         return False
-        #     else:
-        #         game = self.get_game_details(game_Input)
-        #         if len(game.prisoners.keys) <prisoner_number_input or prisoner_number_input <0:
-        #             return False
-        #         else
-        #         return True
-        # else:
-        #     return False
+
     def input_check(self, game_input, prisoner_number_input):
         # Define the regex pattern for checking if input is a number
         number_pattern = r'^-?\d+(?:\.\d+)?$'
