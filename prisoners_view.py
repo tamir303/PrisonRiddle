@@ -15,14 +15,14 @@ class main_view:
         self.is_game_running = True
         self.simulation_ended = False
         self.is_results_showing = False
-        CHOSEN_SIMULATION_GAME = self.controller.get_game_details(0)
-        CHOSEN_SIMULATION_PRISONER = self.controller.get_prisoner_details(0, 0)
+        CHOSEN_SIMULATION_GAME = self.controller.get_game_details(game_num)
+        CHOSEN_SIMULATION_PRISONER = self.controller.get_prisoner_details(game_num, prisoner_num)
 
         locations_generator = self.controller.get_next_location(
             CHOSEN_SIMULATION_PRISONER)
 
         self.settings = setting
-        self.game = game_view(number_of_boxes=len(CHOSEN_SIMULATION_GAME.prisoners))
+        self.game = game_view(number_of_boxes=len(CHOSEN_SIMULATION_GAME.prisoners),prisoner=CHOSEN_SIMULATION_PRISONER)
 
         # Run until the user asks to quit
         game_screen = self.game.get_game_screen()
