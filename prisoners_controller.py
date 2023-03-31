@@ -3,61 +3,125 @@ import prisoners_view
 import re
 
 
-def prisoners_Assert(prisoners_num):
-    assert prisoners_num.isnumeric(), 'prisoners_num value must be integer'
-    assert int(prisoners_num) >= 2, 'numbers of prisoners =", {}, " prisoners must be > 1'.format(
-        prisoners_num)
-
-
-def games_Assert(games_num):
-    assert games_num.isnumeric(), 'games_num value must be integer'
-    assert int(games_num) > 0, 'numbers of prisoners =", {}, " prisoners must be > 1'.format(
-        games_num)
-
-
 class Controller(object):
 
     def __init__(self):
+        """
+        Initialize a new Controller object.
+
+        :param None:
+
+        :return: None
+        :rtype: None
+        """
         self.model = prisoners_game_model.prisoners_model(100, 1)
         self.view = prisoners_view.main_view(self)
 
     def change_model_prisoners(self, prisoners_num):
-        # prisoners_Assert(prisoners_num)
+        """
+        Change the number of prisoners in the model.
+
+        :param prisoners_num: The new number of prisoners to set in the model.
+        :type prisoners_num: int
+        :raises: TypeError, ValueError
+
+        :return: None
+        :rtype: None
+        """
+        # Ensure that the input is a valid integer
+        try:
+            int_prisoners_num = int(prisoners_num)
+        except ValueError:
+            raise ValueError("Input must be an integer.")
+
+        # Ensure that the input is positive
+        if int_prisoners_num <= 0:
+            raise ValueError("Input must be a positive integer.")
+
+        # Update the model with the new number of prisoners
         self.model.change_prisoners_number(int(prisoners_num))
 
     def change_model_games(self, games_num):
-        # games_Assert(games_num)
-        self.model.change_games_number(int(games_num))
+        """
+               Change the number of games in the model.
+
+               :param games_num: The new number of games to set in the model.
+               :type games_num: int
+               :raises: ValueError, TypeError
+
+               :return: None
+               :rtype: None
+               """
+        # Ensure that the input is a valid integer
+        try:
+            int_games_num = int(games_num)
+        except ValueError:
+            raise ValueError("Input must be an integer.")
+
+        # Ensure that the input is positive
+        if int_games_num <= 0:
+            raise ValueError("Input must be a positive integer.")
+
+        # Update the model with the new number of games
+        self.model.change_games_number(int_games_num)
 
     def start_game(self, optimized):
+        """
+        Start a new game with the current model.
+
+        :param optimized: A boolean value indicating whether to use an optimized strategy or not.
+        :type optimized: bool
+
+        :return: None
+        :rtype: None
+        """
         self.model.play(bool(optimized))
 
     def get_game_details(self, game):
-        return self.model.games[game]
-    #def input_check(self,game_Input,prisoner_number_input):
-        # regex = r'^-?\d+(?:\.\d+)?$'
-        # if bool(re.match(regex, game_Input) or prisoner_number_input):
-        #     game_input = int(str(game_Input)) -1
-        #     prisoner_input =int(str(prisoner_number_input))
-            
-        #     if game_input > len(self.model.games.keys) or game_Input <0:
-        #         return False
-        #     else:
-        #         game = self.get_game_details(game_Input)
-        #         if len(game.prisoners.keys) <prisoner_number_input or prisoner_number_input <0:
-        #             return False
-        #         else
-        #         return True
-        # else:
-        #     return False
+        """
+        Get the details for a specific game in the model.
+
+        :param game: The index of the game to retrieve details for.
+        :type game: int
+        :raises: ValueError, TypeError, IndexError
+
+        :return: A dictionary containing the details for the specified game.
+        :rtype: dict
+        """
+        # Ensure that the input is a valid integer
+        try:
+            int_game = int(game)
+        except ValueError:
+            raise ValueError("Input must be an integer.")
+
+        # Ensure that the input is within range
+        if int_game < 0 or int_game >= len(self.model.games.keys()):
+            raise IndexError("Input is out of range.")
+
+        # Return the details for the specified game
+        return self.model.games[int_game]
+
     def input_check(self, game_input, prisoner_number_input):
+        """
+        Check if the given input values are valid for the current model.
+
+        :param game_input: The index of the game to check for validity.
+        :type game_input: int
+        :param prisoner_number_input: The number of prisoners to check for validity.
+        :type prisoner_number_input: int
+        :return: A tuple containing the integer index of the game and the integer number of prisoners if both inputs
+                 are valid and within range. Otherwise, False is returned.
+        :rtype: tuple or bool
+        :raises: None
+        """
         # Define the regex pattern for checking if input is a number
         number_pattern = r'^-?\d+(?:\.\d+)?$'
 
         # Check if both inputs are numbers
-        if not bool(re.match(number_pattern, str(game_input))) or not bool(re.match(number_pattern, str(prisoner_number_input))):
+        if not bool(re.match(number_pattern, str(game_input))) or not bool(
+                re.match(number_pattern, str(prisoner_number_input))):
             return False
-        
+
         # Convert the inputs to integers
         game_input = int(game_input) - 1
         prisoner_input = int(prisoner_number_input)
@@ -72,15 +136,42 @@ class Controller(object):
             return False
 
         # If both inputs are valid numbers and within range, return True
-        return game_input,prisoner_input   
+        return game_input, prisoner_input
 
-    def get_prisoner_details(self,game,prisoner):
+    def get_prisoner_details(self, game, prisoner):
+        """
+        Get the details of a specific prisoner in a specific game.
+
+        :param game: The index of the game.
+        :type game: int
+        :param prisoner: The index of the prisoner.
+        :type prisoner: int
+        :return: A dictionary containing the details of the prisoner.
+        :rtype: dict
+        :raises: IndexError if the game or prisoner index is out of range.
+        """
         return self.model.games[game].prisoners[prisoner]
-    
+
     def get_model_to_string(self):
+        """
+        Get the current game model as a string.
+
+        :return: A string representation of the current game model.
+        :rtype: str
+        :raises: None
+        """
         return self.model.read_game()
 
     def get_next_location(self, prisoner):
+        """
+        Get the next location for the prisoner to move to.
+
+        :param prisoner: The prisoner object.
+        :type prisoner: Prisoner
+        :return: The next location for the prisoner to move to.
+        :rtype: tuple
+        :raises: None
+        """
         queue = []
         for element in prisoner.checkBoxesList:
             queue.append(element)
