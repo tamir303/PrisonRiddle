@@ -77,15 +77,21 @@ class settings_view:
         self.prisoner_number_input_entry['state']='normal'
         self.prisoner_number_InputLabel['state']='normal'
         self.text_area.insert(tk.END,self.controller.get_model_to_string())
+        self.text_area.tag_configure("failed", foreground="red")
+
 
     def play_simulation(self):
         ##TODO add input check on text entery
      ##   if self.validate_integer(self.gameInputentry.get())==False or self.validate_integer(self.prisoner_number_input_entry.get() == False):
        ##     return
         input =self.controller.input_check(self.gameInputentry.get(),self.prisoner_number_input_entry.get())
-        if input == False: 
-            print("fail input")
+        if input == False:
+            self.text_area.delete("1.0", tk.END) 
+            self.text_area.insert("1.0", "Failed Input", "failed")
             return
+        else:
+            self.text_area.tag_configure("failed", foreground="black")
+
         my_thread = threading.Thread(target=self.main_view.run(self,input[0],input[1]))
         # Start the thread
         my_thread.start()
