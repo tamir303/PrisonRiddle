@@ -3,10 +3,42 @@ from sprites import *
 
 
 class game_view:
+    """
+    This class represents the view of the game and contains methods for drawing and updating the game screen.
+
+    Attributes:
+    - number_of_boxes (int): The number of boxes to be displayed in the game (default 10)
+    - speed (float): The speed at which the prisoner moves towards a box (default 0.7)
+    - prisoner (int): The number assigned to the prisoner in the simulation (default 0)
+
+    Methods:
+    - get_game_screen(): Returns the game screen object
+    - update_game(): Updates the game screen
+    - draw_game(expect=None) -> bool: Draws the game screen and moves the prisoner towards the next box.
+        If expect is provided, opens the box with the expected number and returns True if successful, False otherwise.
+    - move_prisoner(moveTo): Moves the prisoner towards the specified box
+    - animate_box(moveTo, expect): Animates the opening of the specified box with the provided number
+    - close_all_boxes(): Closes all boxes in the game
+    - create_target_list(number_of_boxes): Creates a list of random indices for opening the boxes
+    - create_boxes_sprite_list(number_of_boxes, screen_width, screen_height): Creates a dictionary of Box objects
+    - display_info(prisoner, boxes): Displays information about the game on the right side of the screen
+    - display_results(): Displays the path taken by the prisoner and updates the screen for 20 seconds
+    """
+
     TRANSPARENT = (0, 0, 0, 0)
     BACKGROUND_PATH = ASSETS_FOLDER + 'prison_floor.jpg'
 
     def __init__(self, number_of_boxes=10, speed=0.7, prisoner=0):
+        """
+        Initialize the GameView object.
+
+        :param number_of_boxes: int, optional, default: 10
+            The number of boxes in the game.
+        :param speed: float, optional, default: 0.7
+            The speed at which the prisoner moves.
+        :param prisoner: int, optional, default: 0
+            The prisoner number for the game.
+        """
         # initialize all
         self.pygame = pygame
         self.pygame.init()
@@ -43,12 +75,29 @@ class game_view:
         self.lines_path = []
 
     def get_game_screen(self):
+        """
+        Get the game screen.
+
+        :return: pygame.Surface
+            The game screen surface.
+        """
         return self.screen
 
     def update_game(self):
+        """
+        Update the game screen.
+        """
         self.pygame.display.flip()
 
     def draw_game(self, expect=None) -> bool:
+        """
+        Draw the game on the screen.
+
+        :param expect: int, optional
+            The expected value of the box to be opened.
+        :return: bool
+            True if the game is over, False otherwise.
+        """
         self.screen.fill((160, 160, 160))
         self.screen.blit(self.background, (0, 0))
         for box in self.boxes.values():
@@ -70,6 +119,12 @@ class game_view:
         return False
 
     def move_prisoner(self, moveTo):
+        """
+        Move the prisoner to the given box.
+
+        :param moveTo: int
+            The box to move the prisoner to.
+        """
         p_corr = self.prisoner.pos
         b_corr = self.boxes[moveTo].pos
         vector = tuple(map(lambda element: numpy.sign(element[1] - element[0]) *
@@ -77,6 +132,14 @@ class game_view:
         self.prisoner.update_location(vector)
 
     def animate_box(self, moveTo, expect):
+        """
+        Animate the opening of the given box.
+
+        :param moveTo: int
+            The box to open.
+        :param expect: int
+            The expected value of the box to be opened.
+        """
         curr_box = self.boxes[moveTo]
         curr_box.image.fill(game_view.TRANSPARENT)
         self.screen.blit(curr_box.image, curr_box.rect)
@@ -84,15 +147,38 @@ class game_view:
         self.screen.blit(curr_box.image, curr_box.rect)
 
     def close_all_boxes(self):
+        """
+        Close all boxes.
+        """
         for box in self.boxes.values():
             box.close_box()
 
     def create_target_list(self, number_of_boxes):
+        """
+        Create a target list for the boxes to be opened.
+
+        :param number_of_boxes: int
+            The number of boxes in the game.
+        :return: list of int
+            A list of box indices to be opened.
+        """
         target = list(range(0, number_of_boxes - 1))
         numpy.random.shuffle(target)
         return target
 
     def create_boxes_sprite_list(self, number_of_boxes, screen_width, screen_height):
+        """
+        Create a dictionary of box sprites.
+
+        :param number_of_boxes: int
+            The number of boxes in the game.
+        :param screen_width: int
+            The width of the game screen.
+        :param screen_height: int
+            The height of the game screen.
+        :return: dict of Box
+            A dictionary of Box objects representing the boxes in the game.
+        """
         boxes_dict = dict()
         BOX_START_POS = [screen_width // 2, screen_height // 8]
         BOXES_PER_ROW = 5
@@ -109,6 +195,14 @@ class game_view:
         return boxes_dict
 
     def display_info(self, prisoner=0, boxes=0):
+        """
+        Display the game information on the screen.
+
+        :param prisoner: int, optional, default: 0
+            The prisoner number for the game.
+        :param boxes: int, optional, default: 0
+            The number of boxes in the game.
+        """
         text = ["This is the simulation of Prisoner {}".format(prisoner), "There are {} number of boxes".format(boxes),
                 "Press any key to quit the simulation"]
         font_size = 28
@@ -122,6 +216,9 @@ class game_view:
         self.background = merged.copy()
 
     def display_results(self):
+        """
+        Display the results of the game.
+        """
         self.pygame.draw.lines(self.screen, (255, 0, 0), False, self.lines_path, 3)
         self.update_game()
         self.pygame.time.delay(20000)
