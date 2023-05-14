@@ -10,9 +10,9 @@ class prisoner_struct:
 
 
 class game_struct:
-    def __init__(self, number):
+    def __init__(self, number, prisoners):
         self.number = number
-        self.prisoners = {}
+        self.prisoners = prisoners
         self.isSuccess = False
 
     def set_succes(self):
@@ -49,6 +49,11 @@ class prisoners_model:
         :return: None
         """
         sys.stdout = open("PrisonersReults.txt", "w")
+        print('\t\t### PRISONERS ESCAPE #####')
+        print('\t\t    Number Of Games: {}'.format(self.num_of_games))
+        print('\t\t  Number Of Prisoners: {}'.format(self.prisoners_num))
+        print('------------------------------------------------------------')
+
         success = 0
         strategy = {True: self.optimized_prison_round,
                     False: self.unoptimized_prison_round}[optimized]
@@ -58,23 +63,23 @@ class prisoners_model:
             for prisoner_index in range(self.prisoners_num):
                 boxes[prisoner_index] = prisoner_index
             random.shuffle(boxes)
-            self.games[game] = game_struct(game)
+            self.games[game] = game_struct(game, boxes)
             if strategy(boxes, game):
                 success += 1
                 self.games[game].isSuccess = True
 
-        print("n =", self.prisoners_num, " k =", self.num_of_games, " s = ", success,
-              "\ns / k in % =", 100 * (success / self.num_of_games))
+        print("prisoners =", self.prisoners_num, " games =", self.num_of_games, " success = ", success,
+              "\nsuccess / games in % =", 100 * (success / self.num_of_games))
         success = 0
         half_prisoners_number = self.prisoners_num / 2
         for self.num_of_games in range(self.prisoners_num // 2):
             success += 1 / (half_prisoners_number + (self.num_of_games + 1))
         if optimized:
             print("probability by loop calculate the geometric series:\n",
-                  "1 - (1/((n/2)+1) + 1/((n/2)+2) + ...) =", 1 - success)
+                  "1 - (1/((prisoners/2)+1) + 1/((prisoners/2)+2) + ...) =", 1 - success)
         else:
             print("probability by random picking:\n",
-                  "1/(2^n) =", 1 / 2 ** self.prisoners_num)
+                  "1/(2^prisoners) =", 1 / 2 ** self.prisoners_num)
         sys.stdout = sys.__stdout__
 
     def unoptimized_prison_round(self, boxes, game):
@@ -86,7 +91,7 @@ class prisoners_model:
         number_of_boxes = len(boxes)
         prisoners_status_list = number_of_boxes * [0]
         for prisoner in range(number_of_boxes):
-            print("prisoner =", prisoner)
+            print("prisoner =", prisoner + 1)
             checked_boxes = []
             pick = 0
             while True:
@@ -105,11 +110,11 @@ class prisoners_model:
                 print(val, end=" ")
             print()
             if len(checked_boxes) <= (number_of_boxes // 2):
-                print("prisoner number ", prisoner, " succeeded ",
-                      "chain length = ", len(checked_boxes))
+                print("prisoner number ", prisoner + 1, " succeeded ",
+                      "chain length = {}\n".format(pick + 1))
             else:
-                print("prisoner number ", prisoner, " failed ",
-                      "chain length =", len(checked_boxes))
+                print("prisoner number ", prisoner + 1, " failed ",
+                      "chain length = {}\n".format(pick + 1))
             self.games[game].prisoners[prisoner] = prisoner_struct(
                 prisoner, checked_boxes.copy(), prisoners_status_list[prisoner])
             checked_boxes.clear()
@@ -129,7 +134,7 @@ class prisoners_model:
         number_of_boxes = len(boxes)
         prisoners_status_list = number_of_boxes * [0]
         for prisoner in range(number_of_boxes):
-            print("prisoner =", prisoner)
+            print("prisoner =", prisoner + 1)
             checked_boxes = []
             picked_box = boxes[prisoner]
             checked_boxes.append(picked_box)
@@ -152,11 +157,11 @@ class prisoners_model:
             for val in checked_boxes:
                 print(val, end=" ")
             if success:
-                print("prisoner number ", prisoner,
-                      " succeeded ", "chain length =", (pick + 1))
+                print("prisoner number ", prisoner + 1,
+                      " succeeded ", "chain length = {}\n".format(pick + 1))
             else:
-                print("prisoner number ", prisoner,
-                      " failed ", "chain length =", (pick + 1))
+                print("prisoner number ", prisoner + 1,
+                      " failed ", "chain length = {}\n".format(pick + 1))
             checked_boxes.clear()
 
         print("number of prisoners that found their number is:", sum(prisoners_status_list), "\n    from",
