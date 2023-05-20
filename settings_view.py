@@ -41,7 +41,8 @@ class settings_view:
             text="Press to start the game", font=font_style, bg='#F5DEB3')
         self.playButton = tk.Button(
             self.root, text='Play', command=lambda: self.play(), **button_style)
-
+        self.graphButton = tk.Button(
+            self.root, text='Show Prissoners Graph', command=lambda: self.showGraph(), **button_style,state='disabled')
         self.simulationLabel = tk.Label(
             text="Open Game Simulation", font=font_style, bg='#F5DEB3', state='disabled')
         self.playSimulationButton = tk.Button(
@@ -92,12 +93,19 @@ class settings_view:
         self.text_area.delete("1.0", tk.END)
         self.simulationLabel['state'] = 'normal'
         self.playSimulationButton['state'] = 'normal'
+        self.graphButton['state'] = 'normal'
         self.gameInputLabel['state'] = 'normal'
         self.gameInputentry['state'] = 'normal'
         self.prisoner_number_input_entry['state'] = 'normal'
         self.prisoner_number_InputLabel['state'] = 'normal'
         self.text_area.insert(tk.END, self.controller.get_model_to_string())
         self.text_area.tag_configure("failed", foreground="red")
+        
+    def showGraph(self):
+        my_thread = threading.Thread(target=self.controller.open_graph(self.prisonersInput.get()))
+        # Start the thread
+        my_thread.start()
+        # Wait for the thread to finish (optional)
 
     def play_simulation(self):
         """
@@ -187,7 +195,7 @@ class settings_view:
 
         self.startLabel.pack(side=tk.TOP, anchor=tk.W)
         self.playButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
-
+        self.graphButton.pack(side=tk.TOP, anchor=tk.W, pady=10)
         self.gameInputLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.gameInputentry.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.prisoner_number_InputLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)

@@ -1,7 +1,7 @@
 import prisoners_game_model
 import prisoners_view
 import re
-
+import graphs
 
 class Controller(object):
 
@@ -16,7 +16,8 @@ class Controller(object):
         """
         self.model = prisoners_game_model.prisoners_model(100, 1)
         self.view = prisoners_view.main_view(self)
-
+    def open_graph(self,prisoners_num):
+        graphs.show_graph(range(1,int(prisoners_num)))
     def change_model_prisoners(self, prisoners_num):
         """
         Change the number of prisoners in the model.
