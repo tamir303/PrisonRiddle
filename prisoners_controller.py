@@ -3,6 +3,7 @@ import prisoners_view
 import re
 import graphs
 
+
 class Controller(object):
 
     def __init__(self):
@@ -16,8 +17,10 @@ class Controller(object):
         """
         self.model = prisoners_game_model.prisoners_model(100, 1)
         self.view = prisoners_view.main_view(self)
-    def open_graph(self,prisoners_num):
-        graphs.show_graph(range(1,int(prisoners_num)))
+
+    def open_graph(self, prisoners_num):
+        graphs.show_graph(range(1, int(prisoners_num)))
+
     def change_model_prisoners(self, prisoners_num):
         """
         Change the number of prisoners in the model.
@@ -102,7 +105,7 @@ class Controller(object):
         # Return the details for the specified game
         return self.model.games[int_game]
 
-    def input_check(self, game_input, prisoner_number_input):
+    def input_check(self, game_input):  # , prisoner_number_input):
         """
         Check if the given input values are valid for the current model.
 
@@ -119,13 +122,12 @@ class Controller(object):
         number_pattern = r'^-?\d+(?:\.\d+)?$'
 
         # Check if both inputs are numbers
-        if not bool(re.match(number_pattern, str(game_input))) or not bool(
-                re.match(number_pattern, str(prisoner_number_input))):
+        if not bool(re.match(number_pattern, str(game_input))):  # or not bool(re.match(number_pattern, str(prisoner_number_input))):
             return False
 
         # Convert the inputs to integers
         game_input = int(game_input) - 1
-        prisoner_input = int(prisoner_number_input)
+        # prisoner_input = int(prisoner_number_input)
 
         # Check if game_input is within valid range
         if game_input < 0 or game_input >= len(self.model.games.keys()):
@@ -133,11 +135,11 @@ class Controller(object):
 
         # Check if prisoner_number_input is within valid range for the given game
         game = self.get_game_details(game_input)
-        if prisoner_input < 1 or prisoner_input > len(game.prisoners.keys()):
-            return False
+        # if prisoner_input < 1 or prisoner_input > len(game.prisoners.keys()):
+        #     return False
 
         # If both inputs are valid numbers and within range, return True
-        return game_input, prisoner_input
+        return game_input  # , prisoner_input
 
     def get_prisoner_details(self, game, prisoner):
         """

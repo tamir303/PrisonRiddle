@@ -131,10 +131,12 @@ class prisoners_model:
         :param boxes: List of all boxes containing the prisoner's number by order
         :return: True - All prisoners found their number, else False
         """
+        temp = boxes.copy()
         number_of_boxes = len(boxes)
         prisoners_status_list = number_of_boxes * [0]
         for prisoner in range(number_of_boxes):
             print("prisoner =", prisoner + 1)
+            boxes = temp.copy()
             checked_boxes = []
             picked_box = boxes[prisoner]
             checked_boxes.append(picked_box)

@@ -74,9 +74,9 @@ class settings_view:
         self.gameInputLabel = tk.Label(self.root, text="Enter game number:", font=font_style, bg='#F5DEB3',
                                        state='disable')
         self.gameInputentry = tk.Entry(self.root, validate="key", state='disable')
-        self.prisoner_number_InputLabel = tk.Label(self.root, text="Enter Prioner number:", font=font_style,
-                                                   bg='#F5DEB3', state='disable')
-        self.prisoner_number_input_entry = tk.Entry(self.root, validate="key", state='disable')
+        # self.prisoner_number_InputLabel = tk.Label(self.root, text="Enter Prioner number:", font=font_style,
+        #                                            bg='#F5DEB3', state='disable')
+        # self.prisoner_number_input_entry = tk.Entry(self.root, validate="key", state='disable')
 
         self.packing()
         self.root.mainloop()
@@ -96,8 +96,8 @@ class settings_view:
         self.graphButton['state'] = 'normal'
         self.gameInputLabel['state'] = 'normal'
         self.gameInputentry['state'] = 'normal'
-        self.prisoner_number_input_entry['state'] = 'normal'
-        self.prisoner_number_InputLabel['state'] = 'normal'
+        # self.prisoner_number_input_entry['state'] = 'normal'
+        # self.prisoner_number_InputLabel['state'] = 'normal'
         self.text_area.insert(tk.END, self.controller.get_model_to_string())
         self.text_area.tag_configure("failed", foreground="red")
         
@@ -112,15 +112,15 @@ class settings_view:
         Validates input values and displays error message in the text area if validation fails.
         Otherwise, configure text area for simulation results.
         """
-        input = self.controller.input_check(self.gameInputentry.get(), self.prisoner_number_input_entry.get())
-        if not input:
+        input = self.controller.input_check(self.gameInputentry.get()) #, self.prisoner_number_input_entry.get())
+        if input is False:
             self.text_area.delete("1.0", tk.END)
             self.text_area.insert("1.0", "Failed Input", "failed")
             return
         else:
             self.text_area.tag_configure("failed", foreground="black")
 
-        my_thread = threading.Thread(target=self.main_view.run(self, input[0], input[1]))
+        my_thread = threading.Thread(target=self.main_view.run(self, input[0])) #, input[1]))
         # Start the thread
         my_thread.start()
         # Wait for the thread to finish (optional)
@@ -198,8 +198,8 @@ class settings_view:
         self.graphButton.pack(side=tk.TOP, anchor=tk.W, pady=10)
         self.gameInputLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.gameInputentry.pack(side=tk.TOP, anchor=tk.W, pady=5)
-        self.prisoner_number_InputLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
-        self.prisoner_number_input_entry.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        # self.prisoner_number_InputLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        # self.prisoner_number_input_entry.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.simulationLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
 
         self.playSimulationButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
