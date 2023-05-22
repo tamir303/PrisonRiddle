@@ -16,32 +16,41 @@ class main_view:
         self.is_results_showing = False
         CHOSEN_SIMULATION_GAME = self.controller.get_game_details(game_num)
         CHOSEN_SIMULATION_PRISONERS_NUM = len(CHOSEN_SIMULATION_GAME.prisoners)
+        count = 0
         CHOSEN_SIMULATION_PRISONER = CHOSEN_SIMULATION_GAME.prisoners[0]
-        locations_generator = self.controller.get_next_location(
-            CHOSEN_SIMULATION_PRISONER)
+        locations_generator = self.controller.get_next_location(CHOSEN_SIMULATION_PRISONER)
 
         self.settings = setting
-        self.game = game_view(number_of_boxes=len(CHOSEN_SIMULATION_GAME.prisoners), prisoner=CHOSEN_SIMULATION_PRISONER)
+        self.game = game_view(number_of_boxes=len(CHOSEN_SIMULATION_GAME.prisoners))
 
         # Run until the user asks to quit
         game_screen = self.game.get_game_screen()
         location = next(locations_generator)
         while self.is_game_running:
             # Fill the background with white
-            if self.game.draw_game(location) and self.simulation_ended == False:
+            if self.game.draw_game(location) and self.simulation_ended is False:
                 location = self.get_location_from_generator(locations_generator)
                 if location is None:
-                        self.simulation_ended=True
+                    self.simulation_ended = True
+
+            if self.simulation_ended:
+                # Done! Time to quit.
+                self.game.display_results(count)
+                self.simulation_ended = False
+                count += 1
+                if count == CHOSEN_SIMULATION_PRISONERS_NUM:
+                    break
+                CHOSEN_SIMULATION_PRISONER = CHOSEN_SIMULATION_GAME.prisoners[count]
+                locations_generator = self.controller.get_next_location(CHOSEN_SIMULATION_PRISONER)
+                location = next(locations_generator)
+
             # Flip the display
             self.game.update_game()
             self.settings.update_settings()
-            if self.simulation_ended and self.is_results_showing ==False:
-                # Done! Time to quit.
-                self.game.display_results()
-                self.is_results_showing=True
+
             # Did the user click the window close button?
             for event in self.game.pygame.event.get():
-                self.quitEventHandler(event,self.game.pygame,self.simulation_ended)
+                self.quitEventHandler(event, self.game.pygame, self.simulation_ended)
 
 
     def quitEventHandler(self, event,self_pygame,simulation_ended):

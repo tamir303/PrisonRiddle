@@ -28,7 +28,7 @@ class game_view:
     TRANSPARENT = (0, 0, 0, 0)
     BACKGROUND_PATH = ASSETS_FOLDER + 'prison_floor.jpg'
 
-    def __init__(self, number_of_boxes=10, speed=0.7, prisoner=0):
+    def __init__(self, number_of_boxes=10, speed=0.7):
         """
         Initialize the GameView object.
 
@@ -47,14 +47,14 @@ class game_view:
         # Fetch user's screen information
         info = pygame.display.Info()
         # Set screen width
-        screen_width = int(info.current_w * 0.6)
+        self.screen_width = int(info.current_w * 0.6)
         # Set screen height
-        screen_height = int(info.current_h * 0.6)
+        self.screen_height = int(info.current_h * 0.6)
         # Display screen
-        self.screen = pygame.display.set_mode((screen_width, screen_height))
+        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
 
         # Set prisoner's screen start position
-        PRISONERS_START_POS = [screen_width // 8, screen_height // 8]
+        self.PRISONERS_START_POS = [self.screen_width // 8, self.screen_height // 8]
         # Max number of displayed boxes on screen
         BOXES_MAX_NUMBER = 25
 
@@ -67,11 +67,11 @@ class game_view:
         self.display_info(boxes=number_of_boxes)
 
         # Initiate sprites and simulation flow
-        number_of_boxes = min(number_of_boxes, BOXES_MAX_NUMBER)
+        self.number_of_boxes = min(number_of_boxes, BOXES_MAX_NUMBER)
         self.speed = speed
         self.boxes_target = self.create_target_list(number_of_boxes)
-        self.prisoner = Prisoner(PRISONERS_START_POS)
-        self.boxes = self.create_boxes_sprite_list(number_of_boxes, screen_width, screen_height)
+        self.prisoner = Prisoner(self.PRISONERS_START_POS)
+        self.boxes = self.create_boxes_sprite_list(number_of_boxes, self.screen_width, self.screen_height)
         self.lines_path = []
 
     def get_game_screen(self):
@@ -128,7 +128,7 @@ class game_view:
         p_corr = self.prisoner.pos
         b_corr = self.boxes[moveTo].pos
         vector = tuple(map(lambda element: numpy.sign(element[1] - element[0]) *
-                                self.speed + element[0], zip(p_corr, b_corr)))
+                                           self.speed + element[0], zip(p_corr, b_corr)))
         self.prisoner.update_location(vector)
 
     def animate_box(self, moveTo, expect):
@@ -203,7 +203,7 @@ class game_view:
         :param boxes: int, optional, default: 0
             The number of boxes in the game.
         """
-        text = ["This is the simulation of Prisoner {}".format(prisoner), "There are {} number of boxes".format(boxes),
+        text = ["This is the simulation of Prisoner {}".format(prisoner + 1), "There are {} number of boxes".format(boxes),
                 "Press any key to quit the simulation"]
         font_size = 28
         font = pygame.font.SysFont(None, font_size)
@@ -215,11 +215,24 @@ class game_view:
             merged.blit(label[line], (position[0], position[1] + (line * font_size) + (15 * line)))
         self.background = merged.copy()
 
-    def display_results(self):
+    def display_results(self, prisoner):
         """
         Display the results of the game.
         """
-        self.pygame.draw.lines(self.screen, (255, 0, 0), False, self.lines_path, 3)
-        self.background.blit(self.screen, (0, 0))
+        if len(self.lines_path) > 1:
+            self.pygame.draw.lines(self.screen, (255, 0, 0), False, self.lines_path, 3)
         self.update_game()
-    
+        self.pygame.time.delay(2000)
+        self.reset(prisoner)
+        self.screen.fill((160, 160, 160))
+        self.screen.blit(self.background, (0, 0))
+        self.display_info(prisoner=prisoner, boxes=self.number_of_boxes)
+
+    def reset(self, prisoner):
+        self.background = pygame.image.load(game_view.BACKGROUND_PATH)
+        self.background = pygame.transform.smoothscale(self.background, self.screen.get_size())
+        self.boxes_target = self.create_target_list(self.number_of_boxes)
+        self.prisoner = Prisoner(self.PRISONERS_START_POS)
+        self.boxes = self.create_boxes_sprite_list(self.number_of_boxes, self.screen_width, self.screen_height)
+        self.lines_path = []
+        self.screen.fill((0, 0, 0))
