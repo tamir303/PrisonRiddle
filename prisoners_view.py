@@ -35,9 +35,9 @@ class main_view:
 
             if self.simulation_ended:
                 # Done! Time to quit.
-                self.game.display_results(count)
-                self.simulation_ended = False
                 count += 1
+                self.game.display_results(count, CHOSEN_SIMULATION_PRISONER.isSuccess)
+                self.simulation_ended = False
                 if count == CHOSEN_SIMULATION_PRISONERS_NUM:
                     break
                 CHOSEN_SIMULATION_PRISONER = CHOSEN_SIMULATION_GAME.prisoners[count]

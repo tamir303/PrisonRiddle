@@ -147,7 +147,7 @@ class Paper(pygame.sprite.Sprite):
         :type number: str
         """
         number_font = pygame.font.SysFont(None, 28)
-        number_image = number_font.render(number, True, (0, 0, 0))
+        number_image = number_font.render(str(int(number) + 1), True, (0, 0, 0))
         merged = self.image.copy()
         merged.blit(number_image, (20, 15))
         self.image = merged.copy()

@@ -27,6 +27,8 @@ class game_view:
 
     TRANSPARENT = (0, 0, 0, 0)
     BACKGROUND_PATH = ASSETS_FOLDER + 'prison_floor.jpg'
+    SUCCESS_SOUND_PATH = ASSETS_FOLDER + 'success.mp3'
+    FAIL_SOUND_PATH = ASSETS_FOLDER + 'fail.mp3'
 
     def __init__(self, number_of_boxes=10, speed=0.7):
         """
@@ -74,21 +76,6 @@ class game_view:
         self.boxes = self.create_boxes_sprite_list(number_of_boxes, self.screen_width, self.screen_height)
         self.lines_path = []
 
-    def get_game_screen(self):
-        """
-        Get the game screen.
-
-        :return: pygame.Surface
-            The game screen surface.
-        """
-        return self.screen
-
-    def update_game(self):
-        """
-        Update the game screen.
-        """
-        self.pygame.display.flip()
-
     def draw_game(self, expect=None) -> bool:
         """
         Draw the game on the screen.
@@ -118,6 +105,21 @@ class game_view:
             self.update_game()
         return False
 
+    def display_results(self, prisoner, isSuccess):
+        """
+        Display the results of the game.
+        """
+        if len(self.lines_path) > 1 and isSuccess:
+            self.pygame.draw.lines(self.screen, (255, 0, 0), False, self.lines_path, 3)
+        self.update_game()
+        sound = game_view.SUCCESS_SOUND_PATH if isSuccess else game_view.FAIL_SOUND_PATH
+        sound = pygame.mixer.Sound(sound).play()
+        self.pygame.time.delay(2500)
+        self.reset()
+        self.screen.fill((160, 160, 160))
+        self.screen.blit(self.background, (0, 0))
+        self.display_info(isSuccess=isSuccess, prisoner=prisoner, boxes=self.number_of_boxes)
+
     def move_prisoner(self, moveTo):
         """
         Move the prisoner to the given box.
@@ -130,6 +132,53 @@ class game_view:
         vector = tuple(map(lambda element: numpy.sign(element[1] - element[0]) *
                                            self.speed + element[0], zip(p_corr, b_corr)))
         self.prisoner.update_location(vector)
+
+    def display_info(self, isSuccess = False, prisoner=0, boxes=0):
+        """
+        Display the game information on the screen.
+
+        :param isSuccess: boolean, did prisoner succeeded or failed
+        :param prisoner: int, optional, default: 0
+            The prisoner number for the game.
+        :param boxes: int, optional, default: 0
+            The number of boxes in the game.
+        """
+        text = ["This is the simulation of Prisoner {}".format(prisoner + 1), "There are {} number of boxes".format(boxes),
+                "Press any key to quit the simulation"]
+        text.append("Prisoner Succeeded") if isSuccess else text.append("Prisoner Failed")
+        font_size = 28
+        font = pygame.font.SysFont(None, font_size)
+        label, position = [], (30, 40)
+        for line in text:
+            label.append(font.render(str(line), True, (0, 0, 0)))
+        merged = self.background.copy()
+        for line in range(len(label)):
+            merged.blit(label[line], (position[0], position[1] + (line * font_size) + (15 * line)))
+        self.background = merged.copy()
+
+    def reset(self):
+        self.background = pygame.image.load(game_view.BACKGROUND_PATH)
+        self.background = pygame.transform.smoothscale(self.background, self.screen.get_size())
+        self.boxes_target = self.create_target_list(self.number_of_boxes)
+        self.prisoner = Prisoner(self.PRISONERS_START_POS)
+        self.boxes = self.create_boxes_sprite_list(self.number_of_boxes, self.screen_width, self.screen_height)
+        self.lines_path = []
+        self.screen.fill((0, 0, 0))
+
+    def get_game_screen(self):
+        """
+        Get the game screen.
+
+        :return: pygame.Surface
+            The game screen surface.
+        """
+        return self.screen
+
+    def update_game(self):
+        """
+        Update the game screen.
+        """
+        self.pygame.display.flip()
 
     def animate_box(self, moveTo, expect):
         """
@@ -193,46 +242,3 @@ class game_view:
                            BOX_START_POS[1] + r * BOXES_SHIFT)
                 boxes_dict[BOXES_PER_ROW * r + c] = Box(new_pos)
         return boxes_dict
-
-    def display_info(self, prisoner=0, boxes=0):
-        """
-        Display the game information on the screen.
-
-        :param prisoner: int, optional, default: 0
-            The prisoner number for the game.
-        :param boxes: int, optional, default: 0
-            The number of boxes in the game.
-        """
-        text = ["This is the simulation of Prisoner {}".format(prisoner + 1), "There are {} number of boxes".format(boxes),
-                "Press any key to quit the simulation"]
-        font_size = 28
-        font = pygame.font.SysFont(None, font_size)
-        label, position = [], (30, 40)
-        for line in text:
-            label.append(font.render(str(line), True, (0, 0, 0)))
-        merged = self.background.copy()
-        for line in range(len(label)):
-            merged.blit(label[line], (position[0], position[1] + (line * font_size) + (15 * line)))
-        self.background = merged.copy()
-
-    def display_results(self, prisoner):
-        """
-        Display the results of the game.
-        """
-        if len(self.lines_path) > 1:
-            self.pygame.draw.lines(self.screen, (255, 0, 0), False, self.lines_path, 3)
-        self.update_game()
-        self.pygame.time.delay(2000)
-        self.reset(prisoner)
-        self.screen.fill((160, 160, 160))
-        self.screen.blit(self.background, (0, 0))
-        self.display_info(prisoner=prisoner, boxes=self.number_of_boxes)
-
-    def reset(self, prisoner):
-        self.background = pygame.image.load(game_view.BACKGROUND_PATH)
-        self.background = pygame.transform.smoothscale(self.background, self.screen.get_size())
-        self.boxes_target = self.create_target_list(self.number_of_boxes)
-        self.prisoner = Prisoner(self.PRISONERS_START_POS)
-        self.boxes = self.create_boxes_sprite_list(self.number_of_boxes, self.screen_width, self.screen_height)
-        self.lines_path = []
-        self.screen.fill((0, 0, 0))
