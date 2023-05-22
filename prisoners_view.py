@@ -16,7 +16,6 @@ class main_view:
         self.is_results_showing = False
         CHOSEN_SIMULATION_GAME = self.controller.get_game_details(game_num)
         CHOSEN_SIMULATION_PRISONERS_NUM = len(CHOSEN_SIMULATION_GAME.prisoners)
-        count = 0
         CHOSEN_SIMULATION_PRISONER = CHOSEN_SIMULATION_GAME.prisoners[0]
         locations_generator = self.controller.get_next_location(CHOSEN_SIMULATION_PRISONER)
 
@@ -24,7 +23,7 @@ class main_view:
         self.game = game_view(number_of_boxes=len(CHOSEN_SIMULATION_GAME.prisoners))
 
         # Run until the user asks to quit
-        game_screen = self.game.get_game_screen()
+        count = 0
         location = next(locations_generator)
         while self.is_game_running:
             # Fill the background with white
@@ -35,14 +34,15 @@ class main_view:
 
             if self.simulation_ended:
                 # Done! Time to quit.
-                count += 1
                 self.game.display_results(count, CHOSEN_SIMULATION_PRISONER.isSuccess)
-                self.simulation_ended = False
+                count += 1
                 if count == CHOSEN_SIMULATION_PRISONERS_NUM:
                     break
                 CHOSEN_SIMULATION_PRISONER = CHOSEN_SIMULATION_GAME.prisoners[count]
                 locations_generator = self.controller.get_next_location(CHOSEN_SIMULATION_PRISONER)
                 location = next(locations_generator)
+                self.simulation_ended = False
+
 
             # Flip the display
             self.game.update_game()

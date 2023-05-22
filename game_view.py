@@ -66,7 +66,7 @@ class game_view:
         self.background = pygame.transform.smoothscale(self.background, self.screen.get_size())
 
         # Display prisoner's details on the right side
-        self.display_info(boxes=number_of_boxes)
+        self.display_info(0, number_of_boxes)
 
         # Initiate sprites and simulation flow
         self.number_of_boxes = min(number_of_boxes, BOXES_MAX_NUMBER)
@@ -113,12 +113,12 @@ class game_view:
             self.pygame.draw.lines(self.screen, (255, 0, 0), False, self.lines_path, 3)
         self.update_game()
         sound = game_view.SUCCESS_SOUND_PATH if isSuccess else game_view.FAIL_SOUND_PATH
-        sound = pygame.mixer.Sound(sound).play()
+        pygame.mixer.Sound(sound).play()
         self.pygame.time.delay(2500)
         self.reset()
         self.screen.fill((160, 160, 160))
         self.screen.blit(self.background, (0, 0))
-        self.display_info(isSuccess=isSuccess, prisoner=prisoner, boxes=self.number_of_boxes)
+        self.display_info(prisoner, self.number_of_boxes)
 
     def move_prisoner(self, moveTo):
         """
@@ -133,7 +133,7 @@ class game_view:
                                            self.speed + element[0], zip(p_corr, b_corr)))
         self.prisoner.update_location(vector)
 
-    def display_info(self, isSuccess = False, prisoner=0, boxes=0):
+    def display_info(self, prisoner, boxes):
         """
         Display the game information on the screen.
 
@@ -145,7 +145,6 @@ class game_view:
         """
         text = ["This is the simulation of Prisoner {}".format(prisoner + 1), "There are {} number of boxes".format(boxes),
                 "Press any key to quit the simulation"]
-        text.append("Prisoner Succeeded") if isSuccess else text.append("Prisoner Failed")
         font_size = 28
         font = pygame.font.SysFont(None, font_size)
         label, position = [], (30, 40)
