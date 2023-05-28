@@ -1,24 +1,197 @@
 		### PRISONERS ESCAPE #####
 		    Number Of Games: 1
-		  Number Of Prisoners: 2
+		  Number Of Prisoners: 14
 ------------------------------------------------------------
 game number 1
 prisoner = 1
-try number = 1  picked_box = 0
+try number = 1  picked_box = 5
+try number = 2  picked_box = 8
+try number = 3  picked_box = 2
+try number = 4  picked_box = 3
+try number = 5  picked_box = 12
+try number = 6  picked_box = 6
+try number = 7  picked_box = 9
+try number = 8  picked_box = 1
+try number = 9  picked_box = 13
+try number = 10  picked_box = 0
 
-boxes values list by order: 0 
-prisoner number  1  succeeded  chain length = 2
+boxes values list by order: 5 8 2 3 12 6 9 1 13 0 
+prisoner number  1  failed  chain length = 11
 
 prisoner = 2
+try number = 1  picked_box = 6
+try number = 2  picked_box = 5
+try number = 3  picked_box = 3
+try number = 4  picked_box = 2
+try number = 5  picked_box = 0
+try number = 6  picked_box = 4
+try number = 7  picked_box = 9
+try number = 8  picked_box = 11
+try number = 9  picked_box = 7
+try number = 10  picked_box = 1
+
+boxes values list by order: 6 5 3 2 0 4 9 11 7 1 
+prisoner number  2  failed  chain length = 11
+
+prisoner = 3
+try number = 1  picked_box = 9
+try number = 2  picked_box = 10
+try number = 3  picked_box = 6
+try number = 4  picked_box = 0
+try number = 5  picked_box = 11
+try number = 6  picked_box = 7
+try number = 7  picked_box = 1
+try number = 8  picked_box = 3
+try number = 9  picked_box = 8
+try number = 10  picked_box = 4
+try number = 11  picked_box = 12
+try number = 12  picked_box = 13
+try number = 13  picked_box = 2
+
+boxes values list by order: 9 10 6 0 11 7 1 3 8 4 12 13 2 
+prisoner number  3  failed  chain length = 14
+
+prisoner = 4
+try number = 1  picked_box = 7
+try number = 2  picked_box = 5
+try number = 3  picked_box = 6
+try number = 4  picked_box = 2
+try number = 5  picked_box = 3
+
+boxes values list by order: 7 5 6 2 3 
+prisoner number  4  succeeded  chain length = 6
+
+prisoner = 5
+try number = 1  picked_box = 2
+try number = 2  picked_box = 1
+try number = 3  picked_box = 10
+try number = 4  picked_box = 13
+try number = 5  picked_box = 9
+try number = 6  picked_box = 3
+try number = 7  picked_box = 4
+
+boxes values list by order: 2 1 10 13 9 3 4 
+prisoner number  5  succeeded  chain length = 8
+
+prisoner = 6
+try number = 1  picked_box = 8
+try number = 2  picked_box = 2
+try number = 3  picked_box = 3
+try number = 4  picked_box = 11
+try number = 5  picked_box = 5
+
+boxes values list by order: 8 2 3 11 5 
+prisoner number  6  succeeded  chain length = 6
+
+prisoner = 7
+try number = 1  picked_box = 10
+try number = 2  picked_box = 0
+try number = 3  picked_box = 9
+try number = 4  picked_box = 7
+try number = 5  picked_box = 11
+try number = 6  picked_box = 5
+try number = 7  picked_box = 6
+
+boxes values list by order: 10 0 9 7 11 5 6 
+prisoner number  7  succeeded  chain length = 8
+
+prisoner = 8
 try number = 1  picked_box = 1
+try number = 2  picked_box = 10
+try number = 3  picked_box = 8
+try number = 4  picked_box = 13
+try number = 5  picked_box = 12
+try number = 6  picked_box = 0
+try number = 7  picked_box = 2
+try number = 8  picked_box = 4
+try number = 9  picked_box = 7
 
-boxes values list by order: 1 
-prisoner number  2  succeeded  chain length = 2
+boxes values list by order: 1 10 8 13 12 0 2 4 7 
+prisoner number  8  failed  chain length = 10
 
-number of prisoners that find their number is: 2 
-    from 2  prisoners.
+prisoner = 9
+try number = 1  picked_box = 10
+try number = 2  picked_box = 9
+try number = 3  picked_box = 13
+try number = 4  picked_box = 2
+try number = 5  picked_box = 7
+try number = 6  picked_box = 5
+try number = 7  picked_box = 0
+try number = 8  picked_box = 3
+try number = 9  picked_box = 4
+try number = 10  picked_box = 6
+try number = 11  picked_box = 1
+try number = 12  picked_box = 11
+try number = 13  picked_box = 8
 
-prisoners = 2  games = 1  success =  1 
-success / games in % = 100.0
+boxes values list by order: 10 9 13 2 7 5 0 3 4 6 1 11 8 
+prisoner number  9  failed  chain length = 14
+
+prisoner = 10
+try number = 1  picked_box = 1
+try number = 2  picked_box = 12
+try number = 3  picked_box = 5
+try number = 4  picked_box = 6
+try number = 5  picked_box = 7
+try number = 6  picked_box = 11
+try number = 7  picked_box = 8
+try number = 8  picked_box = 2
+try number = 9  picked_box = 13
+try number = 10  picked_box = 3
+try number = 11  picked_box = 0
+try number = 12  picked_box = 9
+
+boxes values list by order: 1 12 5 6 7 11 8 2 13 3 0 9 
+prisoner number  10  failed  chain length = 13
+
+prisoner = 11
+try number = 1  picked_box = 4
+try number = 2  picked_box = 3
+try number = 3  picked_box = 10
+
+boxes values list by order: 4 3 10 
+prisoner number  11  succeeded  chain length = 4
+
+prisoner = 12
+try number = 1  picked_box = 6
+try number = 2  picked_box = 7
+try number = 3  picked_box = 10
+try number = 4  picked_box = 11
+
+boxes values list by order: 6 7 10 11 
+prisoner number  12  succeeded  chain length = 5
+
+prisoner = 13
+try number = 1  picked_box = 4
+try number = 2  picked_box = 8
+try number = 3  picked_box = 12
+
+boxes values list by order: 4 8 12 
+prisoner number  13  succeeded  chain length = 4
+
+prisoner = 14
+try number = 1  picked_box = 0
+try number = 2  picked_box = 9
+try number = 3  picked_box = 4
+try number = 4  picked_box = 1
+try number = 5  picked_box = 7
+try number = 6  picked_box = 8
+try number = 7  picked_box = 2
+try number = 8  picked_box = 10
+try number = 9  picked_box = 3
+try number = 10  picked_box = 12
+try number = 11  picked_box = 6
+try number = 12  picked_box = 11
+try number = 13  picked_box = 5
+try number = 14  picked_box = 13
+
+boxes values list by order: 0 9 4 1 7 8 2 10 3 12 6 11 5 13 
+prisoner number  14  failed  chain length = 15
+
+number of prisoners that find their number is: 7 
+    from 14  prisoners.
+
+prisoners = 14  games = 1  success =  0 
+success / games in % = 0.0
 probability by random picking:
- 1/(2^prisoners) = 0.25
+ 1/(2^prisoners) = 6.103515625e-05
