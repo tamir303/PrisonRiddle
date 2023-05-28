@@ -218,7 +218,11 @@ class settings_view:
         self.gamesInput.pack(side=tk.TOP, anchor=tk.W, pady=5)
 
         self.startLabel.pack(side=tk.TOP, anchor=tk.W)
+        self.strategyLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        self.optimizedRadioOn.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        self.optimizedRadioOff.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.playButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        
         self.graphButton.pack(side=tk.TOP, anchor=tk.W, pady=10)
         self.gameInputLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.gameInputentry.pack(side=tk.TOP, anchor=tk.W, pady=5)
@@ -231,8 +235,6 @@ class settings_view:
         self.fastButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.playSimulationButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
 
-        self.strategyLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
-        self.optimizedRadioOn.pack(side=tk.TOP, anchor=tk.W, pady=5)
-        self.optimizedRadioOff.pack(side=tk.TOP, anchor=tk.W, pady=5)
+
 
         # Right side
