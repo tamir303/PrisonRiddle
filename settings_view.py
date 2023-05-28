@@ -23,7 +23,7 @@ class settings_view:
         self.main_view = main_view
         self.root = tk.Tk()
         self.root.title('Prisoners Escape')
-        self.root.resizable(width=False, height=False)
+        # self.root.resizable(width=False, height=False)
         self.screenwidth = self.root.winfo_screenwidth()
         self.screenheight = self.root.winfo_screenheight()
         self.settings_screen = tk.Frame(self.root, bg='#f5deb3')
@@ -126,7 +126,13 @@ class settings_view:
         my_thread.start()
         # Wait for the thread to finish (optional)
     def showSuccessGraph(self):
-        input = self.controller.input_check(self.gameInputentry.get())
+        input = self.controller.input_check(self.gameInputentry.get()) #, self.prisoner_number_input_entry.get())
+        if input is False:
+            self.text_area.delete("1.0", tk.END)
+            self.text_area.insert("1.0", "Failed Input", "failed")
+            return
+        else:
+            self.text_area.tag_configure("failed", foreground="black")
         my_thread = threading.Thread(target=self.controller.show_success_graph(input))
         # Start the thread
         my_thread.start()
