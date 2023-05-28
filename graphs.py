@@ -19,3 +19,21 @@ def show_graph(num_prisoners_range):
     plt.title('Prisoner Success Probability vs. Number of Prisoners')
     plt.grid(True)
     plt.show()
+    
+def create_success_graph(prisoners_data):
+    
+    success_count = sum(prisoner.isSuccess for prisoner in prisoners_data if prisoner.isSuccess == 1)
+    fail_count = len(prisoners_data) - success_count
+    
+    # Create a bar chart with two columns
+    plt.bar(['Success', 'Fail'], [success_count, fail_count], color=['green', 'red'])
+    plt.xlabel('Outcome')
+    plt.ylabel('Number of Prisoners')
+    plt.title('Prisoner Success Graph')
+    
+    # Add text labels for each column
+    plt.text('Success', success_count, str(success_count), ha='center', va='bottom')
+    plt.text('Fail', fail_count, str(fail_count), ha='center', va='bottom')
+    
+    # Display the graph
+    plt.show()

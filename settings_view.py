@@ -42,7 +42,9 @@ class settings_view:
         self.playButton = tk.Button(
             self.root, text='Play', command=lambda: self.play(), **button_style)
         self.graphButton = tk.Button(
-            self.root, text='Show Prissoners Graph', command=lambda: self.showGraph(), **button_style,state='disabled')
+            self.root, text='Propability Graph', command=lambda: self.showGraph(), **button_style,state='disabled')
+        self.successgraphButton = tk.Button(
+            self.root, text='Game Success Rate Graph', command=lambda: self.showSuccessGraph(), **button_style,state='disabled')
         self.simulationLabel = tk.Label(
             text="Open Game Simulation", font=font_style, bg='#F5DEB3', state='disabled')
         self.adjustspeed = tk.Label(
@@ -110,6 +112,7 @@ class settings_view:
         self.adjustspeed['state'] ='normal'
         self.playSimulationButton['state'] = 'normal'
         self.graphButton['state'] = 'normal'
+        self.successgraphButton['state'] = 'normal'
         self.gameInputLabel['state'] = 'normal'
         self.gameInputentry['state'] = 'normal'
         # self.prisoner_number_input_entry['state'] = 'normal'
@@ -119,6 +122,11 @@ class settings_view:
         
     def showGraph(self):
         my_thread = threading.Thread(target=self.controller.open_graph(self.prisonersInput.get()))
+        # Start the thread
+        my_thread.start()
+        # Wait for the thread to finish (optional)
+    def showSuccessGraph(self):
+        my_thread = threading.Thread(target=self.controller.show_success_graph(self.gamesInput.get()))
         # Start the thread
         my_thread.start()
         # Wait for the thread to finish (optional)
@@ -224,6 +232,8 @@ class settings_view:
         self.playButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
         
         self.graphButton.pack(side=tk.TOP, anchor=tk.W, pady=10)
+        self.successgraphButton.pack(side=tk.TOP, anchor=tk.W, pady=10)
+        
         self.gameInputLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.gameInputentry.pack(side=tk.TOP, anchor=tk.W, pady=5)
         # self.prisoner_number_InputLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)

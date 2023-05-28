@@ -20,7 +20,10 @@ class Controller(object):
 
     def open_graph(self, prisoners_num):
         graphs.show_graph(range(1, int(prisoners_num)))
-
+    
+    def show_success_graph(self,game_num):
+        graphs.create_success_graph(self.get_game_details(game_num).prisoners)
+        
     def change_model_prisoners(self, prisoners_num):
         """
         Change the number of prisoners in the model.
@@ -99,11 +102,11 @@ class Controller(object):
             raise ValueError("Input must be an integer.")
 
         # Ensure that the input is within range
-        if int_game < 0 or int_game >= len(self.model.games.keys()):
+        if int_game < 0 or int_game > len(self.model.games.keys()):
             raise IndexError("Input is out of range.")
 
         # Return the details for the specified game
-        return self.model.games[int_game]
+        return self.model.games[int_game-1]
 
     def input_check(self, game_input):  # , prisoner_number_input):
         """
