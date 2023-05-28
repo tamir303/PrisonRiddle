@@ -232,10 +232,11 @@ class settings_view:
         self.playButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
         
         self.graphButton.pack(side=tk.TOP, anchor=tk.W, pady=10)
-        self.successgraphButton.pack(side=tk.TOP, anchor=tk.W, pady=10)
-        
         self.gameInputLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.gameInputentry.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        self.successgraphButton.pack(side=tk.TOP, anchor=tk.W, pady=10)
+        
+
         # self.prisoner_number_InputLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
         # self.prisoner_number_input_entry.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.simulationLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
