@@ -136,7 +136,7 @@ class settings_view:
         else:
             self.text_area.tag_configure("failed", foreground="black")
 
-        my_thread = threading.Thread(target=self.main_view.run(self, input)) #, input[1]))
+        my_thread = threading.Thread(target=self.main_view.run(self, input,self.simspeed)) #, input[1]))
         # Start the thread
         my_thread.start()
         # Wait for the thread to finish (optional)

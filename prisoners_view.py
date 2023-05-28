@@ -20,7 +20,7 @@ class main_view:
         locations_generator = self.controller.get_next_location(CHOSEN_SIMULATION_PRISONER)
 
         self.settings = setting
-        self.game = game_view(number_of_boxes=len(CHOSEN_SIMULATION_GAME.prisoners))
+        self.game = game_view(number_of_boxes=len(CHOSEN_SIMULATION_GAME.prisoners),speed =self.get_game_speed(speed))
 
         # Run until the user asks to quit
         count = 0
