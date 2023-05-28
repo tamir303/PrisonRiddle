@@ -126,7 +126,8 @@ class settings_view:
         my_thread.start()
         # Wait for the thread to finish (optional)
     def showSuccessGraph(self):
-        my_thread = threading.Thread(target=self.controller.show_success_graph(self.gamesInput.get()))
+        input = self.controller.input_check(self.gameInputentry.get())
+        my_thread = threading.Thread(target=self.controller.show_success_graph(input))
         # Start the thread
         my_thread.start()
         # Wait for the thread to finish (optional)

@@ -106,7 +106,7 @@ class Controller(object):
             raise IndexError("Input is out of range.")
 
         # Return the details for the specified game
-        return self.model.games[int_game-1]
+        return self.model.games[int_game]
 
     def input_check(self, game_input):  # , prisoner_number_input):
         """
