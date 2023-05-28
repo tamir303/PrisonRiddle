@@ -239,5 +239,5 @@ class game_view:
                     else min(number_of_boxes, BOXES_PER_ROW)):
                 new_pos = (BOX_START_POS[0] + c * BOXES_SHIFT,
                            BOX_START_POS[1] + r * BOXES_SHIFT)
-                boxes_dict[BOXES_PER_ROW * r + c] = Box(new_pos)
+                boxes_dict[BOXES_PER_ROW * r + c] = Box(new_pos, r + c)
         return boxes_dict
