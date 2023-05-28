@@ -97,7 +97,7 @@ class prisoners_model:
             while True:
                 picked_box = random.randint(0, number_of_boxes - 1)
                 if picked_box not in checked_boxes:
-                    print("try number =", pick, " picked_box =", picked_box)
+                    print("try number =", pick + 1, " picked_box =", picked_box)
                     checked_boxes.append(picked_box)
                     pick += 1
                     if picked_box == prisoner:
@@ -142,7 +142,7 @@ class prisoners_model:
             checked_boxes.append(picked_box)
             success = False
             for pick in range(number_of_boxes):
-                print("try number =", pick, " picked_box =", picked_box)
+                print("try number =", pick + 1, " picked_box =", picked_box)
                 if picked_box == prisoner and pick < (number_of_boxes // 2):
                     success = True
                     prisoners_status_list[prisoner] = 1
