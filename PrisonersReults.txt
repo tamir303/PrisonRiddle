@@ -4,22 +4,21 @@
 ------------------------------------------------------------
 game number 1
 prisoner = 1
-try number = 0  picked_box = 1
 try number = 1  picked_box = 0
 
-boxes values list by order: 1 0 
-prisoner number  1  failed  chain length = 3
+boxes values list by order: 0 
+prisoner number  1  succeeded  chain length = 2
 
 prisoner = 2
-try number = 0  picked_box = 1
+try number = 1  picked_box = 1
 
 boxes values list by order: 1 
 prisoner number  2  succeeded  chain length = 2
 
-number of prisoners that find their number is: 1 
+number of prisoners that find their number is: 2 
     from 2  prisoners.
 
-prisoners = 2  games = 1  success =  0 
-success / games in % = 0.0
+prisoners = 2  games = 1  success =  1 
+success / games in % = 100.0
 probability by random picking:
  1/(2^prisoners) = 0.25
