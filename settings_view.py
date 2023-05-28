@@ -45,6 +45,22 @@ class settings_view:
             self.root, text='Show Prissoners Graph', command=lambda: self.showGraph(), **button_style,state='disabled')
         self.simulationLabel = tk.Label(
             text="Open Game Simulation", font=font_style, bg='#F5DEB3', state='disabled')
+        self.adjustspeed = tk.Label(
+            text="Adjust Speed", font=font_style, bg='#F5DEB3', state='disabled')
+        self.simspeed = tk.StringVar(value="low")  # Set the initial value to "low"
+        
+        self.lowButton = tk.Radiobutton(self.root, text="Low", variable=self.simspeed,
+                                        value="low", command=lambda: self.change_speed("low"),
+                                        font=('Arial', 12), bg='#F5DEB3', activebackground='#90EE90')
+        
+        self.medButton = tk.Radiobutton(self.root, text="Med", variable=self.simspeed,
+                                        value="med", command=lambda: self.change_speed("med"),
+                                        font=('Arial', 12), bg='#F5DEB3', activebackground='#90EE90')
+        
+        self.fastButton = tk.Radiobutton(self.root, text="Fast", variable=self.simspeed,
+                                         value="fast", command=lambda: self.change_speed("fast"),
+                                         font=('Arial', 12), bg='#F5DEB3', activebackground='#90EE90')
+        
         self.playSimulationButton = tk.Button(
             self.root, text='PlaySimulation', command=lambda: self.play_simulation(), **button_style, state='disabled')
 
@@ -77,7 +93,6 @@ class settings_view:
         # self.prisoner_number_InputLabel = tk.Label(self.root, text="Enter Prioner number:", font=font_style,
         #                                            bg='#F5DEB3', state='disable')
         # self.prisoner_number_input_entry = tk.Entry(self.root, validate="key", state='disable')
-
         self.packing()
         self.root.mainloop()
 
@@ -92,6 +107,7 @@ class settings_view:
         self.controller.start_game(self.optimized)
         self.text_area.delete("1.0", tk.END)
         self.simulationLabel['state'] = 'normal'
+        self.adjustspeed['state'] ='normal'
         self.playSimulationButton['state'] = 'normal'
         self.graphButton['state'] = 'normal'
         self.gameInputLabel['state'] = 'normal'
@@ -159,7 +175,15 @@ class settings_view:
         :return: None
         """
         self.optimized = val
+    def change_speed(self, val):
+        """
+        Changes the value of the 'optimized' attribute to the given value.
 
+        :param val: The new value of the 'optimized' attribute.
+        :return: None
+        """
+        self.simspeed=val
+        
     def validate_integer(self, text):
         """
         Validates whether the given string is a valid integer or not.
@@ -201,7 +225,10 @@ class settings_view:
         # self.prisoner_number_InputLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
         # self.prisoner_number_input_entry.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.simulationLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
-
+        self.adjustspeed.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        self.lowButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        self.medButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        self.fastButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.playSimulationButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
 
         self.strategyLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
