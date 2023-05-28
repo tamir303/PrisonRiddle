@@ -96,7 +96,6 @@ class game_view:
             moveTo = self.boxes_target[0]
             self.move_prisoner(moveTo)
             if self.prisoner.rect.colliderect(self.boxes[moveTo].rect):
-                print("Open Box {}".format(moveTo))
                 self.lines_path.append(self.boxes[moveTo].pos)
                 self.boxes_target.pop(0)
                 self.animate_box(moveTo, expect)
