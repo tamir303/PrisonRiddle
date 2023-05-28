@@ -71,7 +71,7 @@ class game_view:
         # Initiate sprites and simulation flow
         self.number_of_boxes = min(number_of_boxes, BOXES_MAX_NUMBER)
         self.speed = speed
-        self.boxes_target = self.create_target_list(number_of_boxes)
+        self.boxes_target = self.create_target_list(self.number_of_boxes)
         self.prisoner = Prisoner(self.PRISONERS_START_POS)
         self.boxes = self.create_boxes_sprite_list(number_of_boxes, self.screen_width, self.screen_height)
         self.lines_path = []

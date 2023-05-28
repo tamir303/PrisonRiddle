@@ -10,7 +10,7 @@ class main_view:
         self.game = None
         self.is_game_running = False
 
-    def run(self, setting, game_num): #, prisoner_num):
+    def run(self, setting, game_num,speed): #, prisoner_num):
         self.is_game_running = True
         self.simulation_ended = False
         self.is_results_showing = False
@@ -20,7 +20,7 @@ class main_view:
         locations_generator = self.controller.get_next_location(CHOSEN_SIMULATION_PRISONER)
 
         self.settings = setting
-        self.game = game_view(number_of_boxes=len(CHOSEN_SIMULATION_GAME.prisoners))
+        self.game = game_view(number_of_boxes=len(CHOSEN_SIMULATION_GAME.prisoners),speed =self.get_game_speed(speed))
 
         # Run until the user asks to quit
         count = 0
@@ -67,3 +67,10 @@ class main_view:
         except StopIteration:
             return None
         return first
+    def get_game_speed(self,speed):
+        if speed == "low":
+            return 0.7
+        elif speed == "med":
+            return 5.0
+        else:
+            return 10.0
