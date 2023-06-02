@@ -27,14 +27,14 @@ class main_view:
         location = next(locations_generator)
         while self.is_game_running:
             # Fill the background with white
-            if self.game.draw_game(location) and self.simulation_ended is False:
+            if self.game.draw_game(location, CHOSEN_SIMULATION_PRISONER.checkBoxesList, count) and self.simulation_ended is False:
                 location = self.get_location_from_generator(locations_generator)
                 if location is None:
                     self.simulation_ended = True
 
             if self.simulation_ended:
                 # Done! Time to quit.
-                self.game.display_results(count, CHOSEN_SIMULATION_PRISONER.isSuccess)
+                self.game.display_results(CHOSEN_SIMULATION_PRISONER)
                 count += 1
                 if count == CHOSEN_SIMULATION_PRISONERS_NUM:
                     break
