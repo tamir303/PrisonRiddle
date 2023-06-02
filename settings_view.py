@@ -78,10 +78,10 @@ class settings_view:
         self.strategyLabel = tk.Label(
             text="Choose your strategy", font=font_style, bg='#F5DEB3')
         self.optimized = True
-        self.optimizedRadioOn = tk.Radiobutton(self.root, text="Random", variable=self.optimized,
+        self.optimizedRadioOn = tk.Radiobutton(self.root, text="Optimized", variable=self.optimized,
                                                value=True, command=lambda: self.change_opt(True),
                                                font=font_style, bg='#F5DEB3', activebackground='#90EE90')
-        self.optimizedRadioOff = tk.Radiobutton(self.root, text="Optimized", variable=self.optimized,
+        self.optimizedRadioOff = tk.Radiobutton(self.root, text="Random", variable=self.optimized,
                                                 value=False, command=lambda: self.change_opt(False),
                                                 font=font_style, bg='#F5DEB3', activebackground='#90EE90')
         self.text_area = tk.Text(self.root, height=40, width=60)
