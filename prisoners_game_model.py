@@ -47,7 +47,8 @@ class prisoners_model:
         """
         :param optimized: what strategy will the prisoners apply
         :return: None
-        """
+        """ 
+        self.games ={}
         sys.stdout = open("PrisonersReults.txt", "w")
         print('\t\t### PRISONERS ESCAPE #####')
         print('\t\t    Number Of Games: {}'.format(self.num_of_games))
