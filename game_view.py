@@ -153,7 +153,7 @@ class game_view:
         """
         text = ["This is the simulation of Prisoner {}".format(prisoner + 1),
                 "There are {} number of boxes".format(boxes),
-                "The Prisoner as %s The Game".format("Won" if isSuccess else "Lost"),
+                "The Prisoner has {} The Game".format("Won" if isSuccess else "Lost"),
                 "Press any key to quit the simulation"]
         font_size = 28
         font = pygame.font.SysFont(None, font_size)
