@@ -1,5 +1,6 @@
 import numpy
 from sprites import *
+import os
 
 
 class game_view:
@@ -26,8 +27,8 @@ class game_view:
 
     TRANSPARENT = (0, 0, 0, 0)
     BACKGROUND_PATH = ASSETS_FOLDER + 'prison_floor.jpg'
-    SUCCESS_SOUND_PATH = ASSETS_FOLDER + 'success.mp3'
-    FAIL_SOUND_PATH = ASSETS_FOLDER + 'fail.mp3'
+    SUCCESS_SOUND_PATH = 'success.mp3'
+    FAIL_SOUND_PATH = 'fail.mp3'
 
     def __init__(self, number_of_boxes=10, speed=0.7):
         """
@@ -74,7 +75,7 @@ class game_view:
         self.lines_path = []
         self.firstBoxOpenFlag = True
 
-    def draw_game(self, expect=None, check=None, prisoner_num=None) -> bool:
+    def draw_game(self, expect=None, check=None, prisoner_num=None, isSuccess=None) -> bool:
         """
         Draw the game on the screen.
 
@@ -98,7 +99,7 @@ class game_view:
             self.create_target_list(check, prisoner_num)
             self.firstBoxOpenFlag = False
             # Display prisoner's details on the right side
-            self.display_info(prisoner_num, self.number_of_boxes, expect == self.boxes_target[0])
+            self.display_info(prisoner_num, self.number_of_boxes, isSuccess)
 
         if expect is not None:
             moveTo = self.boxes_target[0]
@@ -120,13 +121,18 @@ class game_view:
         if len(self.lines_path) > 1 and prisoner.isSuccess:
             self.pygame.draw.lines(self.screen, (255, 0, 0), False, self.lines_path, 3)
         self.update_game()
+
         sound = game_view.SUCCESS_SOUND_PATH if prisoner.isSuccess else game_view.FAIL_SOUND_PATH
-        pygame.mixer.Sound(sound).play()
-        self.pygame.time.delay(2500)
+        try:
+            file_path = self.find_file(sound, "./")
+            pygame.mixer.Sound(file_path).play()
+        except Exception:
+            pass
+
+        self.pygame.time.delay(3500)
         self.reset()
         self.screen.fill((160, 160, 160))
         self.screen.blit(self.background, (0, 0))
-        self.display_info(prisoner.number + 1, self.number_of_boxes, prisoner.isSuccess)
 
     def move_prisoner(self, moveTo):
         """
@@ -151,19 +157,28 @@ class game_view:
         :param boxes: int, optional, default: 0
             The number of boxes in the game.
         """
+        font_size = 28
+        label, position = [], (30, 40)
+        font = pygame.font.SysFont(None, font_size)
+        text_surface = font.render("", True, (255, 255, 255))
+        text_rect = text_surface.get_rect(center=position)
+        pygame.draw.rect(self.screen, (0, 0, 0), text_rect)
+        self.screen.fill((0, 0, 0))  # Clear the screen
+        self.screen.blit(text_surface, text_rect)  # Draw the text
+        self.update_game()
+
         text = ["This is the simulation of Prisoner {}".format(prisoner + 1),
                 "There are {} number of boxes".format(boxes),
                 "The Prisoner has {} The Game".format("Won" if isSuccess else "Lost"),
                 "Press any key to quit the simulation"]
-        font_size = 28
-        font = pygame.font.SysFont(None, font_size)
-        label, position = [], (30, 40)
+
         for line in text:
             label.append(font.render(str(line), True, (0, 0, 0)))
         merged = self.background.copy()
         for line in range(len(label)):
             merged.blit(label[line], (position[0], position[1] + (line * font_size) + (15 * line)))
         self.background = merged.copy()
+        self.update_game()
 
     def reset(self):
         self.background = pygame.image.load(game_view.BACKGROUND_PATH)
@@ -252,3 +267,9 @@ class game_view:
                            BOX_START_POS[1] + r * BOXES_SHIFT)
                 boxes_dict[BOXES_PER_ROW * r + c] = Box(new_pos, BOXES_PER_ROW * r + c)
         return boxes_dict
+
+    def find_file(self, filename, search_path):
+        for root, dirs, files in os.walk(search_path):
+            if filename in files:
+                return os.path.join(root, filename)
+        return None

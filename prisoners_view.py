@@ -27,7 +27,7 @@ class main_view:
         location = next(locations_generator)
         while self.is_game_running:
             # Fill the background with white
-            if self.game.draw_game(location, CHOSEN_SIMULATION_PRISONER.checkBoxesList, count) and self.simulation_ended is False:
+            if self.game.draw_game(location, CHOSEN_SIMULATION_PRISONER.checkBoxesList, count, CHOSEN_SIMULATION_PRISONER.isSuccess) and self.simulation_ended is False:
                 location = self.get_location_from_generator(locations_generator)
                 if location is None:
                     self.simulation_ended = True
@@ -52,7 +52,7 @@ class main_view:
             for event in self.game.pygame.event.get():
                 self.quitEventHandler(event, self.game.pygame, self.simulation_ended)
                 self.checkKeyPress(self.game.pygame,event)  # Check for key press
-
+        self.game.pygame.quit()
 
     def quitEventHandler(self, event, self_pygame, simulation_ended):
         if event.type == pygame.QUIT:
@@ -70,10 +70,10 @@ class main_view:
         except StopIteration:
             return None
         return first
-    def get_game_speed(self,speed):
+    def get_game_speed(self, speed):
         if speed == "low":
             return 0.7
         elif speed == "med":
             return 5.0
         else:
-            return 10.0
+            return 7.0

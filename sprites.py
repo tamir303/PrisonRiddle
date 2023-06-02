@@ -97,6 +97,13 @@ class Box(pygame.sprite.Sprite):
         merged.blit(self.paper.image, (10, 0))
         self.image = merged.copy()
 
+        number_font = pygame.font.SysFont(None, 48)
+        number_image = number_font.render(str(int(self.num) + 1), True, (255, 255, 0))
+        merged = self.image.copy()
+        merged.blit(number_image, (-5, 0))
+        self.image = merged.copy()
+
+
     def close_box(self):
         """
          Closes the box.
@@ -109,7 +116,7 @@ class Box(pygame.sprite.Sprite):
         number_font = pygame.font.SysFont(None, 84)
         number_image = number_font.render(str(int(self.num) + 1), True, (255, 255, 0))
         merged = self.image.copy()
-        merged.blit(number_image, (20, 15))
+        merged.blit(number_image, (0, 0))
         self.image = merged.copy()
         self.image = pygame.transform.smoothscale(self.image, (80, 80))
 
