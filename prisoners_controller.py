@@ -21,8 +21,8 @@ class Controller(object):
     def open_graph(self, prisoners_num):
         graphs.show_graph(range(1, int(prisoners_num)))
     
-    def show_success_graph(self,game_num):
-        graphs.create_success_graph(self.get_game_details(game_num).prisoners)
+    def show_success_graph(self):
+        graphs.create_success_graph(self.get_games())
         
     def change_model_prisoners(self, prisoners_num):
         """
@@ -167,7 +167,17 @@ class Controller(object):
         :raises: None
         """
         return self.model.read_game()
+    
+    def get_games(self):
+        """
+        Get the current game model as a string.
 
+        :return: A Diconaray with all the games.
+        :rtype: Dic
+        :raises: None
+        """
+        return self.model.games
+    
     def get_next_location(self, prisoner):
         """
         Get the next location for the prisoner to move to.

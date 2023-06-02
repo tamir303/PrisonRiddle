@@ -11,6 +11,7 @@ def calculate_success_probability(num_prisoners):
 
 # Generate data points for the graph
 def show_graph(num_prisoners_range):
+    plt.clf()  # Clear the previous plot
     success_probabilities = [calculate_success_probability(num) for num in num_prisoners_range]
     # Plot the graph
     plt.plot(num_prisoners_range, success_probabilities)
@@ -19,17 +20,17 @@ def show_graph(num_prisoners_range):
     plt.title('Prisoner Success Probability vs. Number of Prisoners')
     plt.grid(True)
     plt.show()
-    
-def create_success_graph(prisoners_data):
-    
-    success_count = sum(prisoner.isSuccess for prisoner in prisoners_data if prisoner.isSuccess == 1)
-    fail_count = len(prisoners_data) - success_count
+
+def create_success_graph(games):
+    plt.clf()  # Clear the previous plot
+    success_count = sum(int(games[game].isSuccess) for game in games if games[game].isSuccess)
+    fail_count = len(games) - success_count
     
     # Create a bar chart with two columns
     plt.bar(['Success', 'Fail'], [success_count, fail_count], color=['green', 'red'])
     plt.xlabel('Outcome')
-    plt.ylabel('Number of Prisoners')
-    plt.title('Prisoner Success Graph')
+    plt.ylabel('Number of Games')
+    plt.title('Games Success Graph')
     
     # Add text labels for each column
     plt.text('Success', success_count, str(success_count), ha='center', va='bottom')

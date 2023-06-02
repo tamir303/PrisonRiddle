@@ -118,20 +118,8 @@ class settings_view:
         self.text_area.insert(tk.END, self.controller.get_model_to_string())
         self.text_area.tag_configure("failed", foreground="red")
         
-    def showGraph(self):
-        my_thread = threading.Thread(target=self.controller.open_graph(self.prisonersInput.get()))
-        # Start the thread
-        my_thread.start()
-        # Wait for the thread to finish (optional)
     def showSuccessGraph(self):
-        input = self.controller.input_check(self.gameInputentry.get()) #, self.prisoner_number_input_entry.get())
-        if input is False:
-            self.text_area.delete("1.0", tk.END)
-            self.text_area.insert("1.0", "Please Insert Game number", "failed")
-            return
-        else:
-            self.text_area.tag_configure("failed", foreground="black")
-        my_thread = threading.Thread(target=self.controller.show_success_graph(input))
+        my_thread = threading.Thread(target=self.controller.show_success_graph())
         # Start the thread
         my_thread.start()
         # Wait for the thread to finish (optional)
@@ -237,8 +225,7 @@ class settings_view:
         self.optimizedRadioOff.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.playButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
         
-        self.gameInputLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
-        self.gameInputentry.pack(side=tk.TOP, anchor=tk.W, pady=5)
+
         self.successgraphButton.pack(side=tk.TOP, anchor=tk.W, pady=10)
         
 
@@ -249,6 +236,8 @@ class settings_view:
         self.lowButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.medButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.fastButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        self.gameInputLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
+        self.gameInputentry.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.playSimulationButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
 
 
