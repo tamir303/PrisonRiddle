@@ -51,16 +51,19 @@ class main_view:
             # Did the user click the window close button?
             for event in self.game.pygame.event.get():
                 self.quitEventHandler(event, self.game.pygame, self.simulation_ended)
+                self.checkKeyPress(self.game.pygame,event)  # Check for key press
 
 
-    def quitEventHandler(self, event,self_pygame,simulation_ended):
+    def quitEventHandler(self, event, self_pygame, simulation_ended):
         if event.type == pygame.QUIT:
             self_pygame.quit()
-            self.is_game_running = False    
-        if event.type == pygame.KEYDOWN and simulation_ended:
-            self_pygame.quit()
-            self.is_game_running = False    
+            self.is_game_running = False 
             
+    def checkKeyPress(self,self_pygame, event):
+        if event.type == pygame.KEYDOWN:
+            self.is_game_running = False
+            self_pygame.quit()
+
     def get_location_from_generator(self, iterable):
         try:
             first = next(iterable)
