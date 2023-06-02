@@ -41,8 +41,7 @@ class settings_view:
             text="Press to start the game", font=font_style, bg='#F5DEB3')
         self.playButton = tk.Button(
             self.root, text='Play', command=lambda: self.play(), **button_style)
-        self.graphButton = tk.Button(
-            self.root, text='Propability Graph', command=lambda: self.showGraph(), **button_style,state='disabled')
+
         self.successgraphButton = tk.Button(
             self.root, text='Game Success Rate Graph', command=lambda: self.showSuccessGraph(), **button_style,state='disabled')
         self.simulationLabel = tk.Label(
@@ -68,7 +67,7 @@ class settings_view:
 
         self.prisonerstLabel = tk.Label(
             text="Enter amount of prisoners", font=font_style, bg='#F5DEB3')
-        self.prisonersInput = tk.Scale(self.root, from_=2, to=1000, orient=tk.HORIZONTAL, length=200,
+        self.prisonersInput = tk.Scale(self.root, from_=2, to=25, orient=tk.HORIZONTAL, length=200,
                                        font=font_style, bg='#F5DEB3')
 
         self.gamesLabel = tk.Label(
@@ -79,12 +78,13 @@ class settings_view:
         self.strategyLabel = tk.Label(
             text="Choose your strategy", font=font_style, bg='#F5DEB3')
         self.optimized = False
-        self.optimizedRadioOn = tk.Radiobutton(self.root, text="Optimized", variable=self.optimized,
-                                               value=True, command=lambda: self.change_opt(True),
+        self.optimizedRadioOn = tk.Radiobutton(self.root, text="Random", variable=self.optimized,
+                                               value=False, command=lambda: self.change_opt(False),
                                                font=font_style, bg='#F5DEB3', activebackground='#90EE90')
-        self.optimizedRadioOff = tk.Radiobutton(self.root, text="Random", variable=self.optimized,
-                                                value=False, command=lambda: self.change_opt(False),
+        self.optimizedRadioOff = tk.Radiobutton(self.root, text="Optimized", variable=self.optimized,
+                                                value=True, command=lambda: self.change_opt(True),
                                                 font=font_style, bg='#F5DEB3', activebackground='#90EE90')
+        self.optimized = True
         self.text_area = tk.Text(self.root, height=40, width=60)
         self.scrollbar = tk.Scrollbar(self.root, command=self.text_area.yview)
         self.text_area.config(yscrollcommand=self.scrollbar.set)
@@ -111,7 +111,6 @@ class settings_view:
         self.simulationLabel['state'] = 'normal'
         self.adjustspeed['state'] ='normal'
         self.playSimulationButton['state'] = 'normal'
-        self.graphButton['state'] = 'normal'
         self.successgraphButton['state'] = 'normal'
         self.gameInputLabel['state'] = 'normal'
         self.gameInputentry['state'] = 'normal'
@@ -190,6 +189,7 @@ class settings_view:
         :return: None
         """
         self.optimized = val
+        
     def change_speed(self, val):
         """
         Changes the value of the 'optimized' attribute to the given value.
@@ -238,7 +238,6 @@ class settings_view:
         self.optimizedRadioOff.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.playButton.pack(side=tk.TOP, anchor=tk.W, pady=5)
         
-        self.graphButton.pack(side=tk.TOP, anchor=tk.W, pady=10)
         self.gameInputLabel.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.gameInputentry.pack(side=tk.TOP, anchor=tk.W, pady=5)
         self.successgraphButton.pack(side=tk.TOP, anchor=tk.W, pady=10)
