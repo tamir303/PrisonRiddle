@@ -77,14 +77,13 @@ class settings_view:
 
         self.strategyLabel = tk.Label(
             text="Choose your strategy", font=font_style, bg='#F5DEB3')
-        self.optimized = False
+        self.optimized = True
         self.optimizedRadioOn = tk.Radiobutton(self.root, text="Random", variable=self.optimized,
-                                               value=False, command=lambda: self.change_opt(False),
+                                               value=True, command=lambda: self.change_opt(True),
                                                font=font_style, bg='#F5DEB3', activebackground='#90EE90')
         self.optimizedRadioOff = tk.Radiobutton(self.root, text="Optimized", variable=self.optimized,
-                                                value=True, command=lambda: self.change_opt(True),
+                                                value=False, command=lambda: self.change_opt(False),
                                                 font=font_style, bg='#F5DEB3', activebackground='#90EE90')
-        self.optimized = True
         self.text_area = tk.Text(self.root, height=40, width=60)
         self.scrollbar = tk.Scrollbar(self.root, command=self.text_area.yview)
         self.text_area.config(yscrollcommand=self.scrollbar.set)
@@ -128,7 +127,7 @@ class settings_view:
         input = self.controller.input_check(self.gameInputentry.get()) #, self.prisoner_number_input_entry.get())
         if input is False:
             self.text_area.delete("1.0", tk.END)
-            self.text_area.insert("1.0", "Failed Input", "failed")
+            self.text_area.insert("1.0", "Please Insert Game number", "failed")
             return
         else:
             self.text_area.tag_configure("failed", foreground="black")
@@ -145,7 +144,7 @@ class settings_view:
         input = self.controller.input_check(self.gameInputentry.get()) #, self.prisoner_number_input_entry.get())
         if input is False:
             self.text_area.delete("1.0", tk.END)
-            self.text_area.insert("1.0", "Failed Input", "failed")
+            self.text_area.insert("1.0", "Please Insert Game number", "failed")
             return
         else:
             self.text_area.tag_configure("failed", foreground="black")
