@@ -84,7 +84,7 @@ class settings_view:
         self.optimizedRadioOff = tk.Radiobutton(self.root, text="Random", variable=self.optimized,
                                                 value=False, command=lambda: self.change_opt(False),
                                                 font=font_style, bg='#F5DEB3', activebackground='#90EE90')
-        self.text_area = tk.Text(self.root, height=40, width=60)
+        self.text_area = tk.Text(self.root, height=40, width=60, wrap="word")
         self.scrollbar = tk.Scrollbar(self.root, command=self.text_area.yview)
         self.text_area.config(yscrollcommand=self.scrollbar.set)
 

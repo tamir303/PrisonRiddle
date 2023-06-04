@@ -30,7 +30,7 @@ class game_view:
     SUCCESS_SOUND_PATH = 'success.mp3'
     FAIL_SOUND_PATH = 'fail.mp3'
 
-    def __init__(self, number_of_boxes=10, speed=0.7):
+    def __init__(self, number_of_boxes=10, speed=0.7, game_info=tuple()):
         """
         Initialize the GameView object.
 
@@ -55,6 +55,10 @@ class game_view:
         # Display screen
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
 
+        # Custom event type
+        self.CUSTOM_EVENT_TYPE = pygame.USEREVENT + 1
+        self.custom_event = pygame.event.Event(self.CUSTOM_EVENT_TYPE, message="waitBeforeContinue")
+
         # Set prisoner's screen start position
         self.PRISONERS_START_POS = [self.screen_width // 8, self.screen_height // 8]
         # Max number of displayed boxes on screen
@@ -74,8 +78,11 @@ class game_view:
         self.boxes = self.create_boxes_sprite_list(self.number_of_boxes, self.screen_width, self.screen_height)
         self.lines_path = []
         self.firstBoxOpenFlag = True
+        self.game_num = game_info[0] + 1
+        self.game_total = game_info[1]
+        self.won = 0
 
-    def draw_game(self, expect=None, check=None, prisoner_num=None, isSuccess=None) -> bool:
+    def draw_game(self, expect=None, check=None, prisoner_num=None, isSuccess=None, isLast=None) -> bool:
         """
         Draw the game on the screen.
 
@@ -99,7 +106,10 @@ class game_view:
             self.create_target_list(check, prisoner_num)
             self.firstBoxOpenFlag = False
             # Display prisoner's details on the right side
-            self.display_info(prisoner_num, self.number_of_boxes, isSuccess)
+            if isSuccess:
+                self.won += 1
+            self.display_info(prisoner_num, self.number_of_boxes, isSuccess, isLast)
+
 
         if expect is not None:
             moveTo = self.boxes_target[0]
@@ -118,7 +128,7 @@ class game_view:
         """
         Display the results of the game.
         """
-        if len(self.lines_path) > 1 and prisoner.isSuccess:
+        if len(self.lines_path) > 1:
             self.pygame.draw.lines(self.screen, (255, 0, 0), False, self.lines_path, 3)
         self.update_game()
 
@@ -129,7 +139,7 @@ class game_view:
         except Exception:
             pass
 
-        self.pygame.time.delay(3500)
+        self.pygame.time.delay(1000)
         self.reset()
         self.screen.fill((160, 160, 160))
         self.screen.blit(self.background, (0, 0))
@@ -147,7 +157,7 @@ class game_view:
                                            self.speed + element[0], zip(p_corr, b_corr)))
         self.prisoner.update_location(vector)
 
-    def display_info(self, prisoner, boxes, isSuccess):
+    def display_info(self, prisoner, boxes, isSuccess, isLast):
         """
         Display the game information on the screen.
 
@@ -167,10 +177,14 @@ class game_view:
         self.screen.blit(text_surface, text_rect)  # Draw the text
         self.update_game()
 
-        text = ["This is the simulation of Prisoner {}".format(prisoner + 1),
+        text = ["Game {} out of {}".format(self.game_num, self.game_total),
+                "This is the simulation of Prisoner {}".format(prisoner + 1),
                 "There are {} number of boxes".format(boxes),
                 "The Prisoner has {} The Game".format("Won" if isSuccess else "Lost"),
-                "Press any key to quit the simulation"]
+                "Press any key to continue next prisoner" if isLast else "",
+                "Press 'Q' to quit",
+                "{} Prisoners Succeeded, {} Prisoners Failed".format(self.won, self.number_of_boxes - self.won) if not isLast else "",
+                ("The Game Was Won" if self.number_of_boxes - self.won == 0 else "The Game Was Lost") if not isLast else ""]
 
         for line in text:
             label.append(font.render(str(line), True, (0, 0, 0)))

@@ -17,6 +17,10 @@ class Controller(object):
         """
         self.model = prisoners_game_model.prisoners_model(100, 1)
         self.view = prisoners_view.main_view(self)
+        self.game_total = 0
+
+    def get_num_of_games(self):
+        return self.game_total
 
     def open_graph(self, prisoners_num):
         graphs.show_graph(range(1, int(prisoners_num)))
@@ -70,6 +74,7 @@ class Controller(object):
             raise ValueError("Input must be a positive integer.")
 
         # Update the model with the new number of games
+        self.game_total = int_games_num
         self.model.change_games_number(int_games_num)
 
     def start_game(self, optimized):
